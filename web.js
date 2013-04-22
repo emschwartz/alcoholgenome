@@ -2,9 +2,6 @@ var express = require("express"),
 pg = require('pg'),
 connectionString = process.env.DATABASE_URL || 'postgres://eschwartz@localhost:5432/';
 
-var dbBuilder = require('./databaseBuilder.js');
-dbBuilder.buildDBFromCSV('dionysusDatabase_10000.csv');
-
 
 var app = express();
 // app.use(express.logger());
