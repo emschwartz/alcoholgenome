@@ -110,11 +110,12 @@ app.get('/get_beer_list', function(req, res) {
 
 	var outer_res = res;
 
+	console.log("connecting to: " + connectionString);
 	pg.connect(connectionString, function (err, client) {
 		var query = client.query("select name, brewery from alcoholgenome", function (err, result){
 			if (err) console.log(err);
 			if (result) {
-				
+
 				var name_list = [];
 				for (var b = 0; b < result.rowCount; b++){
 					var list_entry = result.rows[b]["name"] + " - " + result.rows[b]["brewery"]
