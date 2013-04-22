@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<HTML lang="en">
-	<HEAD>
+<html lang="en">
+	<head>
 		<meta charset="utf-8">
-		<TITLE>
+		<title>
 			The Alcohol Genome Project - Beer
-		</TITLE>
+		</title>
 
 		<!-- jQuery -->
 		<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
@@ -22,10 +22,12 @@
 		<!-- json-to-table -->
 		<script type="text/javascript" src="./afshinm-Json-to-HTML-Table-281c16c/json-to-table.js"></script>
 
+		<!-- beer list -->
+		<script type="text/javascript" src="./beers.json"></script>
 		
 
 		<!-- local CSS -->
-		<!-- <link href="dionysus.css" rel="stylesheet"> -->
+		<link href="dionysus.css" rel="stylesheet">
 
 
 		<script>
@@ -38,15 +40,21 @@
 
 
 		$(document).ready(function() {
+			
+
 			$.get('/get_beer_list', function(response) {
+				var bb = breweries_and_beers;
+			console.log(bb);
+
 				var beer_list = response;
+				// console.log(beer_list);
 
 				for (var b = 0; b < beer_list.length; b++){
 					$("#search").append('<option value ="' + beer_list[b] + '">' + beer_list[b] + '</option>');
 				}
 
 				$("#search").select2({
-					placeholder: "Search our database of 10,000 beers...",
+					placeholder: "Type some of your favorite beers...",
 					width: "100%",
 					minimumInputLength: 3
 					// width: "element"
@@ -83,8 +91,8 @@
 
 </script>
 
-</HEAD>
-<BODY>
+</head>
+<body>
 	<div class="navbar">
 		<div class="navbar-inner">
 			<a class="brand" href="#">The Alcohol Genome Project</a>
@@ -138,5 +146,5 @@
 		</span>
 	</div>
 
-</BODY>
-</HTML>
+</body>
+</html>

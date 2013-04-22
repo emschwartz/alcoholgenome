@@ -57,5 +57,30 @@ function buildDBFromCSV (csv_filename) {
 
 }
 
-exports.buildDBFromCSV = buildDBFromCSV;
+function saveDBtoJSON (csv_filename) {
+	var to_save = {};
 
+	csv()
+		.from.stream(fs.createReadStream(csv_filename))
+		.on('record', function(row,index){
+			if (index > 0) {
+				var brewery = row[1],
+				beer = row[0];
+				if (to_save[brewery] == undefined) {
+					to_save[brewery] = [];
+				}
+				to_save[brewery].push(beer);
+			} 
+
+		})
+
+		.on('end', function(count){
+			console.log(JSON.stringify(to_save));
+		})
+
+		.on('error', function(error){
+			throw error;
+		})
+}
+
+saveDBtoJSON('dionysusDatabase_10000.csv');
