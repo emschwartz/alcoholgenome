@@ -75,6 +75,7 @@ function saveDBtoJSON (csv_filename) {
 		})
 
 		.on('end', function(count){
+			
 			console.log(JSON.stringify(to_save));
 		})
 

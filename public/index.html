@@ -1,57 +1,69 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="utf-8">
-		<title>
-			The Alcohol Genome Project - Beer
-		</title>
+<head>
+	<meta charset="utf-8">
+	<title>
+		The Alcohol Genome Project - Beer
+	</title>
 
-		<!-- jQuery -->
-		<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
-		<script src="http://code.jquery.com/jquery-migrate-1.1.1.min.js"></script>
+	<!-- jQuery -->
+	<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+	<script src="http://code.jquery.com/jquery-migrate-1.1.1.min.js"></script>
 
-		<!-- boostrap -->
-		<link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css" rel="stylesheet">
-		<script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/js/bootstrap.min.js"></script>
+	<!-- boostrap -->
+	<link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css" rel="stylesheet">
+	<script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/js/bootstrap.min.js"></script>
 
-		<!-- Select2 -->
-		<link type="text/css" rel="stylesheet" href="//cdn.jsdelivr.net/select2/3.3.1/select2.css" />
-		<script type="text/javascript" src="//cdn.jsdelivr.net/select2/3.3.1/select2.js"></script>
-		<script type="text/javascript" src="//cdn.jsdelivr.net/select2/3.3.1/select2.min.js"></script>
+	<!-- Select2 -->
+	<link type="text/css" rel="stylesheet" href="//cdn.jsdelivr.net/select2/3.3.1/select2.css" />
+	<script type="text/javascript" src="//cdn.jsdelivr.net/select2/3.3.1/select2.js"></script>
+	<script type="text/javascript" src="//cdn.jsdelivr.net/select2/3.3.1/select2.min.js"></script>
 
-		<!-- json-to-table -->
-		<script type="text/javascript" src="./afshinm-Json-to-HTML-Table-281c16c/json-to-table.js"></script>
+	<!-- json-to-table -->
+	<script type="text/javascript" src="./afshinm-Json-to-HTML-Table-281c16c/json-to-table.js"></script>
 
-		<!-- beer list -->
-		<script type="text/javascript" src="./beers.json"></script>
-		
+	<!-- beer list -->
+	<script type="text/javascript" src="./beers.min.js"></script>
+	
 
-		<!-- local CSS -->
-		<link href="dionysus.css" rel="stylesheet">
+	<!-- local CSS -->
+	<link href="dionysus.css" rel="stylesheet">
 
 
-		<script>
+	<script>
 
-		function populateOptions(option_list) {
-			for (var i = 0; i < option_list.length; i++) {
+		// function populateOptions(option_list) {
+		// 	for (var i = 0; i < option_list.length; i++) {
 
-			}
-		}
-
+		// 	}
+		// }
 
 		$(document).ready(function() {
 			
+			var beer_list = breweries_and_beers;
 
-			$.get('/get_beer_list', function(response) {
-				var bb = breweries_and_beers;
-			console.log(bb);
+			for (var br = 0; br < beer_list.keys().length; br++){
+				var brewery = beer_list.keys()[br],
+				beers = beer_list[brewery];
+				$("#search").append('<optgroup label="' + brewery + '">')
 
-				var beer_list = response;
-				// console.log(beer_list);
-
-				for (var b = 0; b < beer_list.length; b++){
-					$("#search").append('<option value ="' + beer_list[b] + '">' + beer_list[b] + '</option>');
+				for (var be = 0; be < beers.length; be++) {
+					$("#search").append('<option value ="' + beers[be] + '">' + beer_list[be] + '</option>');
 				}
+
+				$("#search").append('</optgroup>')
+			}
+
+
+			// $.get('/get_beer_list', function(response) {
+				
+
+			// 	var beer_list = response;
+			// 	// console.log(beer_list);
+
+			// 	for (var b = 0; b < beer_list.length; b++){
+			// 		$("#search").append('<option value ="' + beer_list[b] + '">' + beer_list[b] + '</option>');
+			// 	}
 
 				$("#search").select2({
 					placeholder: "Type some of your favorite beers...",

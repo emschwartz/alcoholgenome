@@ -40,7 +40,7 @@ function findSimilarBeersTo(db_client, quality_averages, express_response) {
 	// console.log(qualities);
 
 	// construct the query string based off the prioritized quality list
-	var search_ranges = [.075, .1, .15, .2, .2, .2];
+	var search_ranges = [.075, .1, .15, .2, .3, .4];
 
 	var query_string = "select * from alcoholgenome where (";
 		for (var q = 0; q < qualities.length; q++) {
