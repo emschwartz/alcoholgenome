@@ -6,7 +6,7 @@ var fs = require('fs')
 var connectionString = process.env.DATABASE_URL || 'postgres://eschwartz@localhost:5432/';
 
 function createInsertQueryStringForHeaders (headers) {	
-	var query_string = 'insert into dionysus (';
+	var query_string = 'insert into alcoholgenome (';
 		for (var c = 0; c < headers.length; c++) {
 			query_string += headers[c] + ", ";
 		}
@@ -57,5 +57,5 @@ function buildDBFromCSV (csv_filename) {
 
 }
 
+exports.buildDBFromCSV = buildDBFromCSV;
 
-buildDBFromCSV('dionysusDatabase_10000.csv');

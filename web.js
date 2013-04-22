@@ -2,6 +2,9 @@ var express = require("express"),
 pg = require('pg'),
 connectionString = process.env.DATABASE_URL || 'postgres://eschwartz@localhost:5432/';
 
+var dbBuilder = require('./databaseBuilder.js');
+dbBuilder.buildDBFromCSV('dionysusDatabase_10000.csv');
+
 
 var app = express();
 // app.use(express.logger());
@@ -42,7 +45,7 @@ function findSimilarBeersTo(db_client, quality_averages, express_response) {
 	// construct the query string based off the prioritized quality list
 	var search_ranges = [.2, .2, .3, .3, .3, .3];
 
-	var query_string = "select * from dionysus where (";
+	var query_string = "select * from alcoholgenome where (";
 		for (var q = 0; q < qualities.length; q++) {
 			query_string += "(" + qualities[q].property + ">=" + (qualities[q].average - search_ranges[q]) + " and " + qualities[q].property + "<=" + (qualities[q].average + search_ranges[q])+ ") and ";
 		}
@@ -59,7 +62,7 @@ db_client.query(query_string, function(err, result) {
 
 function searchForSimilarBeers(db_client, beer_names, express_response) {
 
-	var query_string = "select * from dionysus where (";
+	var query_string = "select * from alcoholgenome where (";
 		for (var n = 1; n < beer_names.length + 1; n++){
 			query_string = query_string + "(name=$" + (2 * n - 1) + " and " + "brewery=$" + (2 * n) + ") or "; 
 		}
@@ -107,7 +110,7 @@ app.get('/get_beer_list', function(req, res) {
 	var outer_res = res;
 
 	pg.connect(connectionString, function (err, client) {
-		var query = client.query("select name, brewery from dionysus", function (err, result){
+		var query = client.query("select name, brewery from alcoholgenome", function (err, result){
 			if (err) throw err;
 
 			var name_list = [];
