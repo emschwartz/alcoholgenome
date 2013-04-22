@@ -58,4 +58,4 @@ function buildDBFromCSV (csv_filename) {
 }
 
 
-buildDBFromCSV('dionysusDatabase_final.csv');
+buildDBFromCSV('dionysusDatabase_10000.csv');
