@@ -1,0 +1,11 @@
+.search-bar {
+/*	width: 75%;
+*/}
+
+.visible {
+	visibility: visible;
+}
+
+.invisible {
+	visibility: hidden;
+}

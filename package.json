@@ -2,7 +2,9 @@
   "name": "node-example",
   "version": "0.0.1",
   "dependencies": {
-    "express": "3.1.x"
+    "express": "3.1.x",
+    "csv": "0.2.x",
+    "pg": "1.0.x"
   },
   "engines": {
     "node": "0.10.x",

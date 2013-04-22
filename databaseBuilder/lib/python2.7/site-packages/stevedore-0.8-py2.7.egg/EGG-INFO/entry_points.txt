@@ -1,0 +1,4 @@
+[stevedore.test.extension]
+t2 = stevedore.tests.test_extension:FauxExtension
+t1 = stevedore.tests.test_extension:FauxExtension
+
