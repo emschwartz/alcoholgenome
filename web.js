@@ -50,7 +50,7 @@ function findSimilarBeersTo(db_client, quality_averages, express_response) {
 
 // console.log(query_string);
 db_client.query(query_string, function(err, result) {
-	if (err) console.log(err);
+	if (err) throw err;
 	if (result) {
 		returnSimilarBeers(result.rows, express_response);
 	}
@@ -79,7 +79,7 @@ for (var n = 0; n < beer_names.length; n++) {
 // console.log(query_values);
 
 var query = db_client.query(query_string, query_values, function(err, result) {
-	if (err) console.log(err);
+	if (err) throw err;
 
 	if (result) {
 
@@ -110,10 +110,9 @@ app.get('/get_beer_list', function(req, res) {
 
 	var outer_res = res;
 
-	console.log("connecting to: " + connectionString);
 	pg.connect(connectionString, function (err, client) {
 		var query = client.query("select name, brewery from alcoholgenome", function (err, result){
-			if (err) console.log(err);
+			if (err) throw err;
 			if (result) {
 
 				var name_list = [];
