@@ -50,9 +50,10 @@ function findSimilarBeersTo(db_client, quality_averages, express_response) {
 
 // console.log(query_string);
 db_client.query(query_string, function(err, result) {
-	if (err) throw err;
-
-	returnSimilarBeers(result.rows, express_response);
+	if (err) console.log(err);
+	if (result) {
+		returnSimilarBeers(result.rows, express_response);
+	}
 });
 }
 
@@ -78,26 +79,29 @@ for (var n = 0; n < beer_names.length; n++) {
 // console.log(query_values);
 
 var query = db_client.query(query_string, query_values, function(err, result) {
-	if (err) throw err;
+	if (err) console.log(err);
 
-	var quality_averages = {"light" : 0, "dark" : 0, "sweet" : 0, "fruit" : 0, "carbonation" : 0, "spice" : 0};
+	if (result) {
 
-	for (var r = 0; r < result.rowCount; r++) {
-		for (property in quality_averages) {
-			quality_averages[property] += parseFloat(result.rows[r][property]);
+		var quality_averages = {"light" : 0, "dark" : 0, "sweet" : 0, "fruit" : 0, "carbonation" : 0, "spice" : 0};
+
+		for (var r = 0; r < result.rowCount; r++) {
+			for (property in quality_averages) {
+				quality_averages[property] += parseFloat(result.rows[r][property]);
+			}
 		}
-	}
-	for (property in quality_averages) {
-		quality_averages[property] = quality_averages[property]/result.rowCount
-	}
+		for (property in quality_averages) {
+			quality_averages[property] = quality_averages[property]/result.rowCount
+		}
 
-	findSimilarBeersTo(db_client, quality_averages, express_response);
+		findSimilarBeersTo(db_client, quality_averages, express_response);
+
+	}
 });
 
 // query.on('end', function() {
 // 	db_client.end();
 // });
-
 }
 
 
@@ -108,24 +112,25 @@ app.get('/get_beer_list', function(req, res) {
 
 	pg.connect(connectionString, function (err, client) {
 		var query = client.query("select name, brewery from alcoholgenome", function (err, result){
-			if (err) throw err;
+			if (err) console.log(err);
+			if (result) {
+				
+				var name_list = [];
+				for (var b = 0; b < result.rowCount; b++){
+					var list_entry = result.rows[b]["name"] + " - " + result.rows[b]["brewery"]
+					name_list.push(list_entry);
+				}
+				name_list.sort();
 
-			var name_list = [];
-			for (var b = 0; b < result.rowCount; b++){
-				var list_entry = result.rows[b]["name"] + " - " + result.rows[b]["brewery"]
-				name_list.push(list_entry);
+				outer_res.send(name_list);
 			}
-			name_list.sort();
-
-			outer_res.send(name_list);
-
 		});
 
 		// query.on('end', function(){
 		// 	client.end();
 		// });
 
-	});
+});
 
 	
 	
@@ -139,7 +144,7 @@ app.post('/search', function(req, res) {
 	if (search_beer_names.length > 0) {
 		pg.connect(connectionString, function (err, client) {
 			searchForSimilarBeers(client, search_beer_names, express_response);
-	});
+		});
 	}
 });
 
