@@ -61,27 +61,68 @@ function saveDBtoJSON (csv_filename) {
 	var to_save = {};
 
 	csv()
-		.from.stream(fs.createReadStream(csv_filename))
-		.on('record', function(row,index){
-			if (index > 0) {
-				var brewery = row[1],
-				beer = row[0];
-				if (to_save[brewery] == undefined) {
-					to_save[brewery] = [];
-				}
-				to_save[brewery].push(beer);
-			} 
+	.from.stream(fs.createReadStream(csv_filename))
+	.on('record', function(row,index){
+		if (index > 0) {
+			var brewery = row[1],
+			beer = row[0];
+			if (to_save[brewery] == undefined) {
+				to_save[brewery] = [];
+			}
+			to_save[brewery].push(beer);
+		} 
 
-		})
+	})
 
-		.on('end', function(count){
-			
-			console.log(JSON.stringify(to_save));
-		})
+	.on('end', function(count){
 
-		.on('error', function(error){
-			throw error;
-		})
+		return to_save;
+	})
+
+	.on('error', function(error){
+		throw error;
+	})
 }
 
-saveDBtoJSON('dionysusDatabase_10000.csv');
+function saveDBtoArray (csv_filename) {
+	var to_save_obj = {};
+
+	csv()
+	.from.stream(fs.createReadStream(csv_filename))
+	.on('record', function(row,index){
+		if (index > 0) {
+			var brewery = row[1],
+			beer = row[0];
+			if (to_save_obj[brewery] == undefined) {
+				to_save_obj[brewery] = [];
+			}
+			to_save_obj[brewery].push(beer);
+		} 
+
+	})
+
+	.on('end', function(count){
+		// console.log(to_save_obj);
+		var to_save = [];
+
+		for (brewery in to_save_obj) {
+			var brewery_obj = {"Brewery": brewery, "Beers":[]};
+
+			for (var b = 0; b < to_save_obj[brewery].length; b++) {
+				brewery_obj.Beers.push(to_save_obj[brewery][b]);
+			}
+			to_save.push(brewery_obj);
+		}
+		console.log(to_save);
+	})
+
+	.on('error', function(error){
+		throw error;
+	})
+
+
+	
+}
+
+
+console.log(JSON.stringify(saveDBtoArray('dionysusDatabase_10000.csv')));

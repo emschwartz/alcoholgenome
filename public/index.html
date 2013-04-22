@@ -23,8 +23,9 @@
 	<script type="text/javascript" src="./afshinm-Json-to-HTML-Table-281c16c/json-to-table.js"></script>
 
 	<!-- beer list -->
-	<script type="text/javascript" src="./beers.min.js"></script>
-	
+	<!-- 
+	<script type="text/javascript" src="./beers.js"></script>
+ -->
 
 	<!-- local CSS -->
 	<link href="dionysus.css" rel="stylesheet">
@@ -40,44 +41,42 @@
 
 		$(document).ready(function() {
 			
-			var beer_list = breweries_and_beers;
+			// var beer_list = breweries_and_beers;
+			// // console.log(beer_list);
 
-			for (var br = 0; br < beer_list.keys().length; br++){
-				var brewery = beer_list.keys()[br],
-				beers = beer_list[brewery];
-				$("#search").append('<optgroup label="' + brewery + '">')
+			// for (var br = 0; br < beer_list.length; br++){
+			// 	var brewery = beer_list[br].Brewery,
+			// 	beers = beer_list[br].Beers;
+			// 	// $("#search").append('<optgroup label="' + brewery + '">');
+			// 	for (var b = 0; b < beers.length; b++) {
+			// 		var display_name = beers[b] + " - " + brewery;
+			// 		$("#search").append('<option value ="' + display_name + '">' + display_name + '</option>');
+			// 		console.log('<option value="' + display_name + '">' + display_name + '</option>');
+			// 	}
+			// 	// $("#search").append('</optgroup>');
+			// }
 
-				for (var be = 0; be < beers.length; be++) {
-					$("#search").append('<option value ="' + beers[be] + '">' + beer_list[be] + '</option>');
-				}
 
-				$("#search").append('</optgroup>')
-			}
-
-
-			// $.get('/get_beer_list', function(response) {
+			$.get('/get_beer_list', function(response) {
 				
 
-			// 	var beer_list = response;
-			// 	// console.log(beer_list);
+				var beer_list = response;
+				// console.log(beer_list);
 
-			// 	for (var b = 0; b < beer_list.length; b++){
-			// 		$("#search").append('<option value ="' + beer_list[b] + '">' + beer_list[b] + '</option>');
-			// 	}
+				for (var b = 0; b < beer_list.length; b++){
+					$("#search").append('<option value ="' + beer_list[b] + '">' + beer_list[b] + '</option>');
+				}
 
-				$("#search").select2({
-					placeholder: "Type some of your favorite beers...",
-					width: "100%",
-					minimumInputLength: 3
-					// width: "element"
-				// minimumInputLength: 3,
-				// dropdownCssClass: "bigdrop"
+			$("#search").select2({
+				placeholder: "Type some of your favorite beers...",
+				width: "100%",
+				minimumInputLength: 3
 			});
-				$("#loading").removeClass("visible");
-				$("#loading").addClass("invisible");
-				$("#search").removeClass("invisible");
-				$("#search").addClass("visible");
-				$("#search").focus();
+			$("#loading").removeClass("visible");
+			$("#loading").addClass("invisible");
+			$("#search").removeClass("invisible");
+			$("#search").addClass("visible");
+			$("#search").focus();
 
 			});
 
