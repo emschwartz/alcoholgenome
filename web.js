@@ -58,7 +58,7 @@ function findSimilarBeersTo(db_client, quality_averages, express_response) {
 db_client.query(query_string, function(err, result) {
 	if (err) throw err;
 	
-		returnSimilarBeers(result.rows, express_response);
+	returnSimilarBeers(result.rows, express_response);
 	
 });
 }
@@ -112,9 +112,10 @@ var query = db_client.query(query_string, query_values, function(err, result) {
 app.get('/get_beer_list', function(req, res) {
 
 	var outer_res = res;
+	console.log("Server caught GET request /get_beer_list");
 
 	pg.connect(connectionString, function (err, client) {
-		var query = client.query("select name, brewery from alcoholgenome", function (err, result){
+		var query = client.query("select name, brewery from alcoholgenome order by name asc limit 100", function (err, result){
 			if (err) throw err;
 			if (result) {
 
@@ -123,9 +124,11 @@ app.get('/get_beer_list', function(req, res) {
 					var list_entry = result.rows[b]["name"] + " - " + result.rows[b]["brewery"]
 					name_list.push(list_entry);
 				}
-				name_list.sort();
+				// name_list.sort();
 
 				outer_res.send(name_list);
+				console.log("Server returned this for the GET request /get_beer_list: ");
+				console.log(name_list[0] + "...");
 			}
 		});
 
@@ -140,9 +143,14 @@ app.get('/get_beer_list', function(req, res) {
 });
 
 app.post('/search', function(req, res) {
+
+
 	
 	var search_beer_names = req.body.search_items,
 	express_response = res;
+
+	console.log("Server caught POST request /search");
+
 
 	if (search_beer_names.length > 0) {
 		pg.connect(connectionString, function (err, client) {

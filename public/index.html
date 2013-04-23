@@ -25,14 +25,14 @@
 	<!-- beer list -->
 	<!-- 
 	<script type="text/javascript" src="./beers.js"></script>
- -->
+-->
 
-	<!-- local CSS -->
-	<link href="dionysus.css" rel="stylesheet">
-	<link rel='shortcut icon' href='./favicon_32.ico' />
+<!-- local CSS -->
+<link href="dionysus.css" rel="stylesheet">
+<link rel='shortcut icon' href='./favicon_32.ico' />
 
 
-	<script>
+<script>
 
 		// function populateOptions(option_list) {
 		// 	for (var i = 0; i < option_list.length; i++) {
@@ -65,7 +65,7 @@
 
 
 			$.get('/get_beer_list', function(response) {
-				
+				console.log("$.get('/get_beer_list', function(response) {...")
 
 				var beer_list = response;
 				// console.log(beer_list);
@@ -74,13 +74,14 @@
 					$("#search").append('<option value ="' + beer_list[b] + '">' + beer_list[b] + '</option>');
 				}
 
-			
+
 
 			// $("#loading").removeClass("visible");
 			// $("#loading").addClass("invisible");
 			// $("#loading").replaceWith('<div class="lead"> Enter your favorite beers and we\'ll suggest others you\'ll love:</div>')
 			// $("#search").removeClass("invisible");
 			// $("#search").addClass("visible");
+			console.log("resetting select2");
 			$("#search").select2({
 				placeholder: "Type some of your favorite beers...",
 				width: "100%",
@@ -89,7 +90,7 @@
 			$("#search").prop("disabled", false);
 			$("#search").focus();
 
-			});
+		});
 
 
 			// $("#search").select2().data({
@@ -99,13 +100,19 @@
 		// $("search_results").dataTable()
 
 		$("#search").change( function() {
+			console.log('$("#search").change( function() {');
+
 			to_send = {"search_items" : $("#search").val()};
+			$('#results').removeClass("invisible");
+			$('#results').addClass("visible");
+			// $('#loading').addClass("visible");
 
 			$.post('/search', to_send, function (response) {
+				console.log("$.post('/search', to_send, function (response) {");
 
-				var new_results = ConvertJsonToTable(response.slice(0, 100), 'search_results');
-				$('#results').removeClass("invisible");
-				$('#results').addClass("visible");
+				var new_results = ConvertJsonToTable(response, 'search_results');
+				// $('#loading').removeClass("visible");
+				// $('#loading').addClass("invisible");
 
 				$('#search_results').html(new_results);
 
@@ -123,24 +130,26 @@
 			<!-- <div class="container vcentered"> -->
 			<a class="brand vcentered" href="#"><img src="./logo.png" alt="Dionysus - alcoholgenome.com" class="logo"></a>
 			<ul class="nav">
-				<li><a href="#">About</a></li>
 				<li class="active"><a href="#">Beer</a></li>
 				<li><a href="#">Wine</a></li>
 				<li><a href="#">Whiskey</a></li>
+				<li class="divider-vertical"></li>
+				<li><a href="#">How It Works</a></li>
+				<li><a href='mailto:dionysus@alcoholgenome.com?subject=[Dionysus Contact] '>Contact</a></li>
 			</ul>
-		<!-- </div> -->
+			<!-- </div> -->
 		</div>
 	</div>
 
 	<div class="page-header row-fluid">
 		<span class="span8 offset2">
-			<h2>Beer! <small>...recommendations by the Alcohol Genome Project</small></h2>
+			<h2>Beer Recommendations!</h2>
 		</span>
 	</div>
 
 	<div class="row-fluid">
 		<span class="span8 offset2">
-			<div id="searchinstruct" class="lead"> Enter your favorite beers and we'll suggest others you'll love: </div>
+			<div id="searchinstruct" class="lead"> Enter your favorite beers and we'll suggest others we think you'll love: </div>
 
 			<select multiple id="search">
 			</select>
@@ -152,30 +161,31 @@
 	<br>
 
 	<span id="results" class="invisible">
-	<div class="row-fluid">
+		<div class="row-fluid">
 
-		<span class="span8 offset2">
-			<p class="lead">
-				Our Suggestions:
-			</p>
-		</span>
-	</div>
+			<span class="span8 offset2">
+				<span class="lead">
+					Our Suggestions: 
+					<!-- <span id="loading" class="invisible"><img src="waiting.gif"></span> -->
+				</span>
+			</span>
+		</div>
 
-	<div class="row-fluid">
-		<span class="span8 offset2">
-			<table id="search_results" class="table">
-				<thead>
-					<tr>
-						<th>Name</th>
-						<th>Brewery</th>
-						<th>Style</th>
-						<th>BeerAdvocate Rating</th>
-					</tr>
-				</thead>
-			</table>
-		</span>
-	</div>
-</span>
+		<div class="row-fluid">
+			<span class="span8 offset2">
+				<table id="search_results" class="table">
+					<thead>
+						<tr>
+							<th>Name</th>
+							<th>Brewery</th>
+							<th>Style</th>
+							<th>BeerAdvocate Rating</th>
+						</tr>
+					</thead>
+				</table>
+			</span>
+		</div>
+	</span>
 
 </body>
 </html>
