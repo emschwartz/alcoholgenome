@@ -9,3 +9,25 @@
 .invisible {
 	visibility: hidden;
 }
+
+.vcentered {
+	vertical-align:middle;
+}
+
+.navbar .brand { 
+	/*max-height: 40px; */
+	/*overflow: visible;*/
+	/*padding-top: 0;*/
+	/*padding-bottom: 0; */
+	/*padding-right: 0;
+	width: 300px;*/
+	float: none;
+}
+
+img.logo {
+	padding: 0;
+	width: 20%;
+}
+
+
+

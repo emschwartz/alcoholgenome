@@ -44,16 +44,22 @@ function findSimilarBeersTo(db_client, quality_averages, express_response) {
 
 	var query_string = "select * from alcoholgenome where (";
 		for (var q = 0; q < qualities.length; q++) {
-			query_string += "(" + qualities[q].property + ">=" + (qualities[q].average - search_ranges[q]) + " and " + qualities[q].property + "<=" + (qualities[q].average + search_ranges[q])+ ") and ";
+			if (qualities[q].average < 0) {
+				query_string += "(" + qualities[q].property + "<=" + (qualities[q].average + search_ranges[q]) + ") and ";
+			} else {
+				query_string += "(" + qualities[q].property + ">=" + (qualities[q].average - search_ranges[q]) + ") and ";
+
+			}
+
 		}
 		query_string = query_string.substring(0, query_string.length - 4) + ") order by rating desc";
 
 // console.log(query_string);
 db_client.query(query_string, function(err, result) {
 	if (err) throw err;
-	if (result) {
+	
 		returnSimilarBeers(result.rows, express_response);
-	}
+	
 });
 }
 

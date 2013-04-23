@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<title>
-		The Alcohol Genome Project - Beer
+		Dionysus Alcohol Recommendations - The Alcohol Genome Project
 	</title>
 
 	<!-- jQuery -->
@@ -29,6 +29,7 @@
 
 	<!-- local CSS -->
 	<link href="dionysus.css" rel="stylesheet">
+	<link rel='shortcut icon' href='./favicon_32.ico' />
 
 
 	<script>
@@ -55,6 +56,12 @@
 			// 	}
 			// 	// $("#search").append('</optgroup>');
 			// }
+			$("#search").prop("disabled", true);
+
+			$("#search").select2({
+				placeholder: 'Loading Beers... (we\'re loading up 10,000 beers, give us a sec)',
+				width: "100%",
+			});
 
 
 			$.get('/get_beer_list', function(response) {
@@ -67,15 +74,19 @@
 					$("#search").append('<option value ="' + beer_list[b] + '">' + beer_list[b] + '</option>');
 				}
 
+			
+
+			// $("#loading").removeClass("visible");
+			// $("#loading").addClass("invisible");
+			// $("#loading").replaceWith('<div class="lead"> Enter your favorite beers and we\'ll suggest others you\'ll love:</div>')
+			// $("#search").removeClass("invisible");
+			// $("#search").addClass("visible");
 			$("#search").select2({
 				placeholder: "Type some of your favorite beers...",
 				width: "100%",
 				minimumInputLength: 3
 			});
-			$("#loading").removeClass("visible");
-			$("#loading").addClass("invisible");
-			$("#search").removeClass("invisible");
-			$("#search").addClass("visible");
+			$("#search").prop("disabled", false);
 			$("#search").focus();
 
 			});
@@ -93,6 +104,9 @@
 			$.post('/search', to_send, function (response) {
 
 				var new_results = ConvertJsonToTable(response.slice(0, 100), 'search_results');
+				$('#results').removeClass("invisible");
+				$('#results').addClass("visible");
+
 				$('#search_results').html(new_results);
 
 			});
@@ -106,13 +120,15 @@
 <body>
 	<div class="navbar">
 		<div class="navbar-inner">
-			<a class="brand" href="#">The Alcohol Genome Project</a>
+			<!-- <div class="container vcentered"> -->
+			<a class="brand vcentered" href="#"><img src="./logo.png" alt="Dionysus - alcoholgenome.com" class="logo"></a>
 			<ul class="nav">
 				<li><a href="#">About</a></li>
 				<li class="active"><a href="#">Beer</a></li>
 				<li><a href="#">Wine</a></li>
 				<li><a href="#">Whiskey</a></li>
 			</ul>
+		<!-- </div> -->
 		</div>
 	</div>
 
@@ -124,15 +140,18 @@
 
 	<div class="row-fluid">
 		<span class="span8 offset2">
-			<select multiple id="search" class="invisible">
+			<div id="searchinstruct" class="lead"> Enter your favorite beers and we'll suggest others you'll love: </div>
+
+			<select multiple id="search">
 			</select>
 
-			<div id="loading" class="visible lead"> Loading Beers <img src="./waiting.gif" width="30px"> </div>
+			
 		</span>
 	</div>
 
 	<br>
 
+	<span id="results" class="invisible">
 	<div class="row-fluid">
 
 		<span class="span8 offset2">
@@ -156,6 +175,7 @@
 			</table>
 		</span>
 	</div>
+</span>
 
 </body>
 </html>
