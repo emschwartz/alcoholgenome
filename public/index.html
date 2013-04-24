@@ -72,12 +72,12 @@
 					var new_results = response;
 					console.log(new_results);
 					new_results = $.each(new_results, function (index, value) {
-						value[" "] = "<button class='btn btn-primary purchase'>Order</button>";
+						value[" "] = "<button class='btn btn-primary purchase'><i class='icon-shopping-cart icon-white'></i></button>";
 					});
 					new_results = ConvertJsonToTable(response, 'search_results');
 					$('#search_results').html(new_results);
 					$('.purchase').click(function () {
-						alert("Oops, so far we've only built the recommendation part of our site.\n\nAs soon as we raise some more money we'll make ordering these great beers as easy as clicking this button!");
+						alert("Oops, so far we've only built the recommendation part of our site...\n\nAs soon as we raise some more money we'll make ordering these great beers as easy as clicking this button!");
 				});
 
 				});
