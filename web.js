@@ -7,7 +7,7 @@ var app = express();
 // app.use(express.logger());
 app.use(express.bodyParser());
 
-function returnSimilarBeers(rows, express_response, query, db_client) {
+function returnSimilarBeers(rows, express_response, db_client) {
 	// console.log(rows);
 	var to_send = []
 	for (var r = 0; r < rows.length; r++ ) {
@@ -26,10 +26,8 @@ function returnSimilarBeers(rows, express_response, query, db_client) {
 	}
 	express_response.send(to_send);
 	// console.log(query);
-	query.on('end', function(){
 			// console.log("ending the client");
-			db_client.end();
-		});
+	db_client.end();
 }
 
 
@@ -63,7 +61,7 @@ function findSimilarBeersTo(db_client, quality_averages, express_response) {
 var query = db_client.query(query_string, function(err, result) {
 	if (err) throw err;
 	
-	returnSimilarBeers(result.rows, express_response, query, db_client);
+	returnSimilarBeers(result.rows, express_response, db_client);
 	
 });
 }
