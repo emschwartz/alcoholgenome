@@ -5,6 +5,7 @@
 	<meta name="keywords" content="alcohol,beer,wine,whiskey,pandora,recommendation,suggestion,review,beeradvocate">
 	<meta name="author" content="Evan Schwartz">
 	<meta charset="utf-8">
+
 	<title>
 		Dionysus Beer Recommendations - The Alcohol Genome Project
 	</title>
@@ -25,12 +26,6 @@
 	<!-- json-to-table -->
 	<script type="text/javascript" src="./afshinm-Json-to-HTML-Table-281c16c/json-to-table.js"></script>
 
-
-	<!-- beer list -->
-	<!-- 
-	<script type="text/javascript" src="./beers.js"></script>
--->
-
 <!-- local CSS -->
 <link href="dionysus.css" rel="stylesheet">
 <link rel='shortcut icon' href='./favicon_32.ico' />
@@ -38,14 +33,10 @@
 
 <script>
 
-		// function populateOptions(option_list) {
-		// 	for (var i = 0; i < option_list.length; i++) {
-
-		// 	}
-		// }
 
 		$(document).ready(function() {
 
+			// create empty search bar
 			$("#search").prop("disabled", true);
 			$('#search').select2({
 				placeholder: 'Loading Beers... (we\'re loading up 10,000 beers, give us a sec)',
@@ -53,7 +44,7 @@
 			});
 
 
-
+			// get beer list from server and populate search bar field
 			$.get('/get_beer_list', function(response) {
 				var beer_list = response;
 				$.each(beer_list, function(index, value) {   
@@ -72,181 +63,27 @@
 			});
 
 
-
-
+			// automatically send search bar selections to the server and display results
 			$("#search").change( function() {
 				var search_query = $("#search").val();
 				console.log("searching for: " + search_query)
 				to_send = {"search_items" : search_query};
 				$.post('/search', to_send, function (response) {
-					var new_results = ConvertJsonToTable(response, 'search_results');
+					var new_results = response;
+					console.log(new_results);
+					new_results = $.each(new_results, function (index, value) {
+						value[" "] = "<button class='btn btn-primary purchase'>Order</button>";
+					});
+					new_results = ConvertJsonToTable(response, 'search_results');
 					$('#search_results').html(new_results);
+					$('.purchase').click(function () {
+						alert("Oops, so far we've only built the recommendation part of our site.\n\nAs soon as we raise some more money we'll make ordering these great beers as easy as clicking this button!");
+				});
 
 				});
 			});
 
 		});
-
-			// var beer_list = breweries_and_beers;
-			// // console.log(beer_list);
-
-			// for (var br = 0; br < beer_list.length; br++){
-			// 	var brewery = beer_list[br].Brewery,
-			// 	beers = beer_list[br].Beers;
-			// 	// $("#search").append('<optgroup label="' + brewery + '">');
-			// 	for (var b = 0; b < beers.length; b++) {
-			// 		var display_name = beers[b] + " - " + brewery;
-			// 		$("#search").append('<option value ="' + display_name + '">' + display_name + '</option>');
-			// 		console.log('<option value="' + display_name + '">' + display_name + '</option>');
-			// 	}
-			// 	// $("#search").append('</optgroup>');
-			// }
-
-
-			// var beer_list = $.ajax ('/get_beer_list', 
-			// {
-			// 		type: 'GET',
-			// 		dataType: 'json',
-			// 		multiple: true,
-			// 		data: '',
-			// 		results: function (data, page) {
-			// 			return data;
-			// 		}
-			// 	});
-
-			// console.log(beer_list);
-			// $("#search").select2({
-			// 	width: '100%',
-			// 	multiple: true,
-			// 	data: beer_list
-			// 	// ajax: {
-			// 	// 	dataType: 'json',
-			// 	// 	url: '/get_beer_list',
-			// 	// 	data: function () {
-			// 	// 		return '';
-			// 	// 	},
-			// 	// 	results: function (data, page) {
-			// 	// 		return data;
-			// 	// 	}
-			// 	// }
-
-			// });
-
-
-
-// $("#search").prop("disabled", true);
-// $('#search').select2({
-// 	query:function(query){
-// 		var data = {results: []};
-// 		data.results.push({text: query.term});
-// 		query.callback(data);
-// 	},
-// 	placeholder: 'Loading Beers... (we\'re loading up 10,000 beers, give us a sec)',
-// 	width: '100%',
-// 	multiple: true
-// });
-
-
-
-
-// $.get('/get_beer_list', function(response) {
-
-// 			// 		var beer_list = response;
-// 			// 	// console.log(beer_list);
-
-// 			// 	// for (var b = 0; b < beer_list.length; b++){
-// 			// 	// 	$("#search").append('<option value ="' + beer_list[b] + '">' + beer_list[b] + '</option>');
-// 			// 	// }
-// 			$("#search").val(response);
-			// console.log($("#search").val());
-
-
-
-
-
-
-			// 	console.log(beer_list);
-
-				// $("#search").select2({
-				// width: '100%',
-				// multiple: true,
-				// data: function () {
-				// 	return beer_list;
-				// }
-
-
-				// ajax: {
-				// 	dataType: 'json',
-				// 	url: '/get_beer_list',
-				// 	data: function () {
-				// 		return '';
-				// 	},
-				// 	results: function (data, page) {
-				// 		return data;
-				// 	}
-				// }
-
-			// });
-
-			// console.log($('#search').val());
-
-			// $('#search').select2({
-			// 	query:function(query){
-			// 		var data = {results: []};
-			// 		data.results.push({text: query.term});
-			// 		query.callback(data);
-			// 	},
-			// 	placeholder: 'Enter your favorite beers and we\'ll suggest others you\'ll love',
-			// 	width: '100%',
-			// 	multiple: true,
-			// 	// data: $(this).val()
-			// 	// data: beer_list
-			// 	ajax: {
-			// 		dataType: 'json',
-			// 		url: '/get_beer_list',
-			// 		data: function () {
-			// 			console.log("sent something");
-			// 			return '';
-			// 		},
-			// 		results: function (data, page) {
-			// 			console.log(data);
-			// 			return data;
-			// 		}
-
-			// 	}
-
-			// });
-
-
-			// $("#search").prop("disabled", false);
-			// $("#search").focus();
-
-		// });
-
-			// $("#loading").removeClass("visible");
-			// $("#loading").addClass("invisible");
-			// $("#loading").replaceWith('<div class="lead"> Enter your favorite beers and we\'ll suggest others you\'ll love:</div>')
-			// $("#search").removeClass("invisible");
-			// $("#search").addClass("visible");
-			// console.log("resetting select2");
-			// $("#search").select2({
-			// 	placeholder: "Type some of your favorite beers...",
-			// 	width: "100%",
-			// 	minimumInputLength: 3
-			// 	});
-
-
-
-
-
-			// $("#search").select2().data({
-			// 	"try this" : "or this"
-			// });
-
-		// $("search_results").dataTable()
-
-		
-
 
 		</script>
 
@@ -302,6 +139,7 @@
 
 			<div class="row-fluid">
 				<span class="span8 offset2">
+					
 					<table id="search_results" class="table">
 						<thead>
 							<tr>
@@ -312,6 +150,8 @@
 							</tr>
 						</thead>
 					</table>
+
+
 				</span>
 			</div>
 		</span>
