@@ -7,7 +7,7 @@ var app = express();
 // app.use(express.logger());
 app.use(express.bodyParser());
 
-function returnSimilarBeers(rows, express_response) {
+function returnSimilarBeers(rows, express_response, query, db_client) {
 	// console.log(rows);
 	var to_send = []
 	for (var r = 0; r < rows.length; r++ ) {
@@ -25,6 +25,11 @@ function returnSimilarBeers(rows, express_response) {
 		});
 	}
 	express_response.send(to_send);
+	// console.log(query);
+	query.on('end', function(){
+			// console.log("ending the client");
+			db_client.end();
+		});
 }
 
 
@@ -55,10 +60,10 @@ function findSimilarBeersTo(db_client, quality_averages, express_response) {
 		query_string = query_string.substring(0, query_string.length - 4) + ") order by rating desc limit 100";
 
 // console.log(query_string);
-db_client.query(query_string, function(err, result) {
+var query = db_client.query(query_string, function(err, result) {
 	if (err) throw err;
 	
-	returnSimilarBeers(result.rows, express_response);
+	returnSimilarBeers(result.rows, express_response, query, db_client);
 	
 });
 }
@@ -128,14 +133,14 @@ app.get('/get_beer_list', function(req, res) {
 				// name_list.sort();
 
 				outer_res.send(name_list);
+				client.end();
+				
 				// console.log("Server returned this for the GET request /get_beer_list: ");
 				// console.log(JSON.stringify(name_list));
 			
 		});
 
-		// query.on('end', function(){
-		// 	client.end();
-		// });
+		
 
 });
 
