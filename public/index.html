@@ -1,9 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+	<meta name="description" content="Alcohol recommendation app by the Alcohol Genome Project">
+	<meta name="keywords" content="alcohol,beer,wine,whiskey,pandora,recommendation,suggestion,review,beeradvocate">
+	<meta name="author" content="Evan Schwartz">
 	<meta charset="utf-8">
 	<title>
-		Dionysus Alcohol Recommendations - The Alcohol Genome Project
+		Dionysus Beer Recommendations - The Alcohol Genome Project
 	</title>
 
 	<!-- jQuery -->
@@ -21,6 +24,7 @@
 
 	<!-- json-to-table -->
 	<script type="text/javascript" src="./afshinm-Json-to-HTML-Table-281c16c/json-to-table.js"></script>
+
 
 	<!-- beer list -->
 	<!-- 
@@ -41,7 +45,48 @@
 		// }
 
 		$(document).ready(function() {
-			
+
+			$("#search").prop("disabled", true);
+			$('#search').select2({
+				placeholder: 'Loading Beers... (we\'re loading up 10,000 beers, give us a sec)',
+				width: '100%'
+			});
+
+
+
+			$.get('/get_beer_list', function(response) {
+				var beer_list = response;
+				$.each(beer_list, function(index, value) {   
+					$('#search')
+					.append($("<option></option>")
+						.attr("value",value)
+						.text(value)); 
+				});
+				$('#search').select2({
+					placeholder: "Type some of your favorite beers...",
+					width: "100%",
+					minimumInputLength: 3
+
+				});
+				$("#search").prop("disabled", false);
+			});
+
+
+
+
+			$("#search").change( function() {
+				var search_query = $("#search").val();
+				console.log("searching for: " + search_query)
+				to_send = {"search_items" : search_query};
+				$.post('/search', to_send, function (response) {
+					var new_results = ConvertJsonToTable(response, 'search_results');
+					$('#search_results').html(new_results);
+
+				});
+			});
+
+		});
+
 			// var beer_list = breweries_and_beers;
 			// // console.log(beer_list);
 
@@ -56,41 +101,142 @@
 			// 	}
 			// 	// $("#search").append('</optgroup>');
 			// }
-			$("#search").prop("disabled", true);
-
-			$("#search").select2({
-				placeholder: 'Loading Beers... (we\'re loading up 10,000 beers, give us a sec)',
-				width: "100%",
-			});
 
 
-			$.get('/get_beer_list', function(response) {
-				console.log("$.get('/get_beer_list', function(response) {...")
+			// var beer_list = $.ajax ('/get_beer_list', 
+			// {
+			// 		type: 'GET',
+			// 		dataType: 'json',
+			// 		multiple: true,
+			// 		data: '',
+			// 		results: function (data, page) {
+			// 			return data;
+			// 		}
+			// 	});
 
-				var beer_list = response;
-				// console.log(beer_list);
+			// console.log(beer_list);
+			// $("#search").select2({
+			// 	width: '100%',
+			// 	multiple: true,
+			// 	data: beer_list
+			// 	// ajax: {
+			// 	// 	dataType: 'json',
+			// 	// 	url: '/get_beer_list',
+			// 	// 	data: function () {
+			// 	// 		return '';
+			// 	// 	},
+			// 	// 	results: function (data, page) {
+			// 	// 		return data;
+			// 	// 	}
+			// 	// }
 
-				for (var b = 0; b < beer_list.length; b++){
-					$("#search").append('<option value ="' + beer_list[b] + '">' + beer_list[b] + '</option>');
-				}
+			// });
 
 
+
+// $("#search").prop("disabled", true);
+// $('#search').select2({
+// 	query:function(query){
+// 		var data = {results: []};
+// 		data.results.push({text: query.term});
+// 		query.callback(data);
+// 	},
+// 	placeholder: 'Loading Beers... (we\'re loading up 10,000 beers, give us a sec)',
+// 	width: '100%',
+// 	multiple: true
+// });
+
+
+
+
+// $.get('/get_beer_list', function(response) {
+
+// 			// 		var beer_list = response;
+// 			// 	// console.log(beer_list);
+
+// 			// 	// for (var b = 0; b < beer_list.length; b++){
+// 			// 	// 	$("#search").append('<option value ="' + beer_list[b] + '">' + beer_list[b] + '</option>');
+// 			// 	// }
+// 			$("#search").val(response);
+			// console.log($("#search").val());
+
+
+
+
+
+
+			// 	console.log(beer_list);
+
+				// $("#search").select2({
+				// width: '100%',
+				// multiple: true,
+				// data: function () {
+				// 	return beer_list;
+				// }
+
+
+				// ajax: {
+				// 	dataType: 'json',
+				// 	url: '/get_beer_list',
+				// 	data: function () {
+				// 		return '';
+				// 	},
+				// 	results: function (data, page) {
+				// 		return data;
+				// 	}
+				// }
+
+			// });
+
+			// console.log($('#search').val());
+
+			// $('#search').select2({
+			// 	query:function(query){
+			// 		var data = {results: []};
+			// 		data.results.push({text: query.term});
+			// 		query.callback(data);
+			// 	},
+			// 	placeholder: 'Enter your favorite beers and we\'ll suggest others you\'ll love',
+			// 	width: '100%',
+			// 	multiple: true,
+			// 	// data: $(this).val()
+			// 	// data: beer_list
+			// 	ajax: {
+			// 		dataType: 'json',
+			// 		url: '/get_beer_list',
+			// 		data: function () {
+			// 			console.log("sent something");
+			// 			return '';
+			// 		},
+			// 		results: function (data, page) {
+			// 			console.log(data);
+			// 			return data;
+			// 		}
+
+			// 	}
+
+			// });
+
+
+			// $("#search").prop("disabled", false);
+			// $("#search").focus();
+
+		// });
 
 			// $("#loading").removeClass("visible");
 			// $("#loading").addClass("invisible");
 			// $("#loading").replaceWith('<div class="lead"> Enter your favorite beers and we\'ll suggest others you\'ll love:</div>')
 			// $("#search").removeClass("invisible");
 			// $("#search").addClass("visible");
-			console.log("resetting select2");
-			$("#search").select2({
-				placeholder: "Type some of your favorite beers...",
-				width: "100%",
-				minimumInputLength: 3
-			});
-			$("#search").prop("disabled", false);
-			$("#search").focus();
+			// console.log("resetting select2");
+			// $("#search").select2({
+			// 	placeholder: "Type some of your favorite beers...",
+			// 	width: "100%",
+			// 	minimumInputLength: 3
+			// 	});
 
-		});
+
+
 
 
 			// $("#search").select2().data({
@@ -99,93 +245,76 @@
 
 		// $("search_results").dataTable()
 
-		$("#search").change( function() {
-			console.log('$("#search").change( function() {');
-
-			to_send = {"search_items" : $("#search").val()};
-			$('#results').removeClass("invisible");
-			$('#results').addClass("visible");
-			// $('#loading').addClass("visible");
-
-			$.post('/search', to_send, function (response) {
-				console.log("$.post('/search', to_send, function (response) {");
-
-				var new_results = ConvertJsonToTable(response, 'search_results');
-				// $('#loading').removeClass("visible");
-				// $('#loading').addClass("invisible");
-
-				$('#search_results').html(new_results);
-
-			});
-		});
-	});
+		
 
 
-</script>
+		</script>
 
-</head>
-<body>
-	<div class="navbar">
-		<div class="navbar-inner">
-			<!-- <div class="container vcentered"> -->
-			<a class="brand vcentered" href="#"><img src="./logo.png" alt="Dionysus - alcoholgenome.com" class="logo"></a>
-			<ul class="nav">
-				<li class="active"><a href="#">Beer</a></li>
-				<li><a href="#">Wine</a></li>
-				<li><a href="#">Whiskey</a></li>
-				<li class="divider-vertical"></li>
-				<li><a href="#">How It Works</a></li>
-				<li><a href='mailto:dionysus@alcoholgenome.com?subject=[Dionysus Contact] '>Contact</a></li>
-			</ul>
-			<!-- </div> -->
+	</head>
+	<body>
+		<div class="navbar">
+			<div class="navbar-inner">
+				<!-- <div class="container vcentered"> -->
+				<a class="brand vcentered" href="#"><img src="./logo.png" alt="Dionysus - alcoholgenome.com" class="logo"></a>
+				<ul class="nav">
+					<li class="active"><a href="#">Beer</a></li>
+					<li><a href="#">Wine</a></li>
+					<li><a href="#">Whiskey</a></li>
+					<li class="divider-vertical"></li>
+					<li><a href="#">How It Works</a></li>
+					<li><a href='mailto:dionysus@alcoholgenome.com?subject=[Dionysus Contact] '>Contact</a></li>
+				</ul>
+				<!-- </div> -->
+			</div>
 		</div>
-	</div>
 
-	<div class="page-header row-fluid">
-		<span class="span8 offset2">
-			<h2>Beer Recommendations!</h2>
-		</span>
-	</div>
-
-	<div class="row-fluid">
-		<span class="span8 offset2">
-			<div id="searchinstruct" class="lead"> Enter your favorite beers and we'll suggest others we think you'll love: </div>
-
-			<select multiple id="search">
-			</select>
-
-			
-		</span>
-	</div>
-
-	<br>
-
-	<span id="results" class="invisible">
-		<div class="row-fluid">
-
+		<div class="page-header row-fluid">
 			<span class="span8 offset2">
-				<span class="lead">
-					Our Suggestions: 
-					<!-- <span id="loading" class="invisible"><img src="waiting.gif"></span> -->
+				<h2>Beer Recommendations!</h2>
+			</span>
+		</div>
+
+		<div class="row-fluid">
+			<span class="span8 offset2">
+				<div id="searchinstruct" class="lead"> Enter your favorite beers and we'll suggest others we think you'll love: </div>
+
+				<select multiple id="search">
+				</select>
+
+
+				<!-- <input id="search" type="hidden"> -->
+
+			</span>
+		</div>
+
+		<br>
+
+		<span id="results">
+			<div class="row-fluid">
+
+				<span class="span8 offset2">
+					<span class="lead">
+						Our Suggestions: 
+						<!-- <span id="loading" class="invisible"><img src="waiting.gif"></span> -->
+					</span>
 				</span>
-			</span>
-		</div>
+			</div>
 
-		<div class="row-fluid">
-			<span class="span8 offset2">
-				<table id="search_results" class="table">
-					<thead>
-						<tr>
-							<th>Name</th>
-							<th>Brewery</th>
-							<th>Style</th>
-							<th>BeerAdvocate Rating</th>
-						</tr>
-					</thead>
-				</table>
-			</span>
-		</div>
-	</span>
+			<div class="row-fluid">
+				<span class="span8 offset2">
+					<table id="search_results" class="table">
+						<thead>
+							<tr>
+								<th>Name</th>
+								<th>Brewery</th>
+								<th>Style</th>
+								<th>BeerAdvocate Rating</th>
+							</tr>
+						</thead>
+					</table>
+				</span>
+			</div>
+		</span>
 
-</body>
-</html>
+	</body>
+	</html>

@@ -52,7 +52,7 @@ function findSimilarBeersTo(db_client, quality_averages, express_response) {
 			}
 
 		}
-		query_string = query_string.substring(0, query_string.length - 4) + ") order by rating desc";
+		query_string = query_string.substring(0, query_string.length - 4) + ") order by rating desc limit 100";
 
 // console.log(query_string);
 db_client.query(query_string, function(err, result) {
@@ -115,21 +115,22 @@ app.get('/get_beer_list', function(req, res) {
 	console.log("Server caught GET request /get_beer_list");
 
 	pg.connect(connectionString, function (err, client) {
-		var query = client.query("select name, brewery from alcoholgenome order by name asc limit 100", function (err, result){
+		var query = client.query("select name, brewery from alcoholgenome order by name asc", function (err, result){
 			if (err) throw err;
-			if (result) {
+			
 
 				var name_list = [];
 				for (var b = 0; b < result.rowCount; b++){
-					var list_entry = result.rows[b]["name"] + " - " + result.rows[b]["brewery"]
-					name_list.push(list_entry);
+					name_list.push(result.rows[b].name + " - " + result.rows[b].brewery);
+					// var list_entry = {id: b, text: result.rows[b]["name"] + " - " + result.rows[b]["brewery"]};
+					// name_list.push(list_entry);
 				}
 				// name_list.sort();
 
 				outer_res.send(name_list);
-				console.log("Server returned this for the GET request /get_beer_list: ");
-				console.log(name_list[0] + "...");
-			}
+				// console.log("Server returned this for the GET request /get_beer_list: ");
+				// console.log(JSON.stringify(name_list));
+			
 		});
 
 		// query.on('end', function(){
@@ -149,13 +150,16 @@ app.post('/search', function(req, res) {
 	var search_beer_names = req.body.search_items,
 	express_response = res;
 
-	console.log("Server caught POST request /search");
+	console.log("Server caught POST request /search with names: " + JSON.stringify(search_beer_names));
 
 
 	if (search_beer_names.length > 0) {
 		pg.connect(connectionString, function (err, client) {
+			console.log("searching for similar beers");
 			searchForSimilarBeers(client, search_beer_names, express_response);
 		});
+	} else {
+		res.send({});
 	}
 });
 
