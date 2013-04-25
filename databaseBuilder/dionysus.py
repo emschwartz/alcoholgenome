@@ -1,8 +1,9 @@
+# coding=utf-8
+
 import csv, urllib
 
 from beerRater import *
 from webScraper import *
-from databaseSaver import *
 
 database_headers = []
 already_wrote_to_file = False
@@ -27,6 +28,8 @@ def createBeerDatabaseRow (beer, header_array):
 	beer_row[header_array.index("Rating")] = (str(beer["Rating"]))
 	beer_row[header_array.index("Link")] = (str(beer["Link"]))
 	beer_row[header_array.index("Style")] = (str(beer["Style"]))
+	beer_row[header_array.index("Locations")] = (str(beer["Locations"]))
+	beer_row[header_array.index("Num Reviews")] = (str(beer["Num Reviews"]))
 
 	# save the Ratings and keyword Counts to the array
 	# for category in beer["Ratings"].keys():
@@ -57,7 +60,7 @@ def addBeersToDatabase(beers, output_filename):
 		if database_headers == []:
 			beer_categories = getBeerWordCategories()
 			beer_categories = map(lambda s: s.title(), beer_categories)
-			database_headers = ["Name", "Brewery", "Rating", "Link", "Style"]
+			database_headers = ["Name", "Brewery", "Rating", "Link", "Style", "Locations", "Num Reviews"]
 			# add the database_headers for the raw counts
 			database_headers.extend(beer_categories)
 
@@ -84,6 +87,8 @@ def addBeersToDatabase(beers, output_filename):
 def createDBFrom (start_url='http://beeradvocate.com/beer/style/', pages_per_style=1, output_filename='dionysusDatabase.csv'):
 	if re.search(r'^http://beeradvocate.com/beer/profile/\d+/\d+', start_url):
 		beer = parseBeerPage(start_url)
+		if beer == None:
+			return None
 		beers = {}
 		beers[beer["Name"]] = beer
 		addBeersToDatabase(beers, output_filename)
@@ -104,12 +109,13 @@ def createDBFrom (start_url='http://beeradvocate.com/beer/style/', pages_per_sty
 
 	elif re.search(r'^http://beeradvocate.com/beer/style/$', start_url):
 		style_links = getStyleLinks(start_url)
-		for style_link in style_links:
-			print "parsing beers from style: " + style_link
+		for s in range(1, len(style_links)):
+			style_link = style_links[s]
+			print "parsing from style " + str(s) + "/" + str(len(style_links)) + ": " + style_link
 			createDBFrom(style_link, pages_per_style, output_filename)
 
 
-def dionysus (start_url='http://beeradvocate.com/beer/style/', pages_per_style=1, output_filename=
+def dionysus (start_url='http://beeradvocate.com/beer/style/', pages_per_style=5, output_filename=
 	'dionysusDatabase.csv'):
 
 	createDBFrom(start_url, pages_per_style, output_filename)
@@ -139,9 +145,9 @@ def dionysus (start_url='http://beeradvocate.com/beer/style/', pages_per_style=1
 	# 	addBeersToDatabase({beer["Name"] : beer}, 'dionysusDatabase.csv')
 
 
-dionysus('http://beeradvocate.com/beer/style/', 20)
+# dionysus('http://beeradvocate.com/beer/style/', 25)
 
-# dionysus('http://beeradvocate.com/beer/profile/16315/55191')
+dionysus()
 
 # first_beer = parseBeersFromStartPage('http://beeradvocate.com/beer/style/128')["Bell's Amber Ale"]
 # print createBeerDatabaseRow(first_beer)

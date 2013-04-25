@@ -66,18 +66,32 @@
 			// automatically send search bar selections to the server and display results
 			$("#search").change( function() {
 				var search_query = $("#search").val();
-				console.log("searching for: " + search_query)
+				console.log("searching for: " + search_query);
 				to_send = {"search_items" : search_query};
+
 				$.post('/search', to_send, function (response) {
 					var new_results = response;
-					console.log(new_results);
+
 					new_results = $.each(new_results, function (index, value) {
 						value[" "] = "<button class='btn btn-primary purchase'><i class='icon-shopping-cart icon-white'></i></button>";
 					});
 					new_results = ConvertJsonToTable(response, 'search_results');
 					$('#search_results').html(new_results);
+
+					if (new_results.length == 0) {
+						$("#results").removeClass("visible");
+						$("#results").addClass("invisible");
+					} else {
+						$("#results").removeClass("invisible");
+						$("#results").addClass("visible");
+					}
+
 					$('.purchase').click(function () {
-						alert("Oops, so far we've only built the recommendation part of our site...\n\nAs soon as we raise some more money we'll make ordering these great beers as easy as clicking this button!");
+
+						$(this).addClass("disabled btn-success");
+						// $(this).val('<i class="icon-ok-sign"></i>');
+						// $(this).button({icons:'icon-ok-sign'});
+						// alert("Oops, so far we've only built the recommendation part of our site...\n\nAs soon as we raise some more money we'll make ordering these great beers as easy as clicking this button!");
 				});
 
 				});
@@ -126,7 +140,7 @@
 
 		<br>
 
-		<span id="results">
+		<div id="results" class="invisible">
 			<div class="row-fluid">
 
 				<span class="span8 offset2">
@@ -154,7 +168,7 @@
 
 				</span>
 			</div>
-		</span>
+		</div>
 
 	</body>
 	</html>

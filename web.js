@@ -2,6 +2,7 @@ var express = require("express"),
 pg = require('pg'),
 connectionString = process.env.DATABASE_URL || 'postgres://eschwartz@localhost:5432/';
 
+pg.defaults.poolSize = 100;
 
 var app = express();
 // app.use(express.logger());
@@ -27,11 +28,11 @@ function returnSimilarBeers(rows, express_response, db_client) {
 	express_response.send(to_send);
 	// console.log(query);
 			// console.log("ending the client");
-	db_client.end();
-}
+			db_client.end();
+		}
 
 
-function findSimilarBeersTo(db_client, quality_averages, express_response) {
+		function findSimilarBeersTo(db_client, quality_averages, express_response) {
 
 	// rank the categories in order of their importance
 	var qualities = [];
@@ -115,36 +116,32 @@ var query = db_client.query(query_string, query_values, function(err, result) {
 app.get('/get_beer_list', function(req, res) {
 
 	var outer_res = res;
+	var name_list = [];
 	console.log("Server caught GET request /get_beer_list");
 
 	pg.connect(connectionString, function (err, client) {
-		var query = client.query("select name, brewery from alcoholgenome order by name asc", function (err, result){
-			if (err) throw err;
-			
+		var query = client.query("select name, brewery from alcoholgenome order by name asc");
 
-				var name_list = [];
-				for (var b = 0; b < result.rowCount; b++){
-					name_list.push(result.rows[b].name + " - " + result.rows[b].brewery);
-					// var list_entry = {id: b, text: result.rows[b]["name"] + " - " + result.rows[b]["brewery"]};
-					// name_list.push(list_entry);
-				}
-				// name_list.sort();
-
-				outer_res.send(name_list);
-				client.end();
-				
-				// console.log("Server returned this for the GET request /get_beer_list: ");
-				// console.log(JSON.stringify(name_list));
-			
+		query.on('row', function (row) {
+			name_list.push(row.name + " - " + row.brewery);
 		});
-
 		
 
+		query.on('end', function() {
+			outer_res.send(name_list);
+			console.log("ending client");
+			client.end();
+			// console.log(client);
+		});
+	});
+
+
+
 });
 
-	
-	
-});
+
+
+
 
 app.post('/search', function(req, res) {
 
