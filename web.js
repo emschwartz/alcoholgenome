@@ -2,7 +2,7 @@ var express = require("express"),
 pg = require('pg'),
 connectionString = process.env.DATABASE_URL || 'postgres://eschwartz@localhost:5432/';
 
-pg.defaults.poolSize = 100;
+pg.defaults.poolSize = 10000;
 
 var app = express();
 // app.use(express.logger());
