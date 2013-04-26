@@ -125,4 +125,4 @@ function saveDBtoArray (csv_filename) {
 }
 
 
-console.log(JSON.stringify(saveDBtoArray('dionysusDatabase_10000.csv')));
+buildDBFromCSV('dionysusDatabase_4.25.csv');

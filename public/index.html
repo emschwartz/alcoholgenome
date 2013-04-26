@@ -26,15 +26,15 @@
 	<!-- json-to-table -->
 	<script type="text/javascript" src="./afshinm-Json-to-HTML-Table-281c16c/json-to-table.js"></script>
 
-<!-- local CSS -->
-<link href="dionysus.css" rel="stylesheet">
-<link rel='shortcut icon' href='./favicon_32.ico' />
+	<!-- local CSS -->
+	<link href="dionysus.css" rel="stylesheet">
+	<link rel='shortcut icon' href='./favicon_32.ico' />
 
 
-<script>
+	<script>
 
 
-		$(document).ready(function() {
+	$(document).ready(function() {
 
 			// create empty search bar
 			$("#search").prop("disabled", true);
@@ -65,110 +65,163 @@
 
 			// automatically send search bar selections to the server and display results
 			$("#search").change( function() {
-				var search_query = $("#search").val();
+				var search_query = $("#search").val(),
+				state = $('#state').val();
 				console.log("searching for: " + search_query);
-				to_send = {"search_items" : search_query};
+				to_send = {
+					"search_items" : search_query,
+					"state": state
+				};
 
 				$.post('/search', to_send, function (response) {
 					var new_results = response;
 
-					new_results = $.each(new_results, function (index, value) {
-						value[" "] = "<button class='btn btn-primary purchase'><i class='icon-shopping-cart icon-white'></i></button>";
-					});
 					new_results = ConvertJsonToTable(response, 'search_results');
 					$('#search_results').html(new_results);
 
 					if (new_results.length == 0) {
-						$("#results").removeClass("visible");
+						// $("#results").removeClass("visible");
 						$("#results").addClass("invisible");
 					} else {
 						$("#results").removeClass("invisible");
 						$("#results").addClass("visible");
 					}
 
-					$('.purchase').click(function () {
-
-						$(this).addClass("disabled btn-success");
-						// $(this).val('<i class="icon-ok-sign"></i>');
-						// $(this).button({icons:'icon-ok-sign'});
-						// alert("Oops, so far we've only built the recommendation part of our site...\n\nAs soon as we raise some more money we'll make ordering these great beers as easy as clicking this button!");
-				});
+					
 
 				});
-			});
+});
 
-		});
+});
 
-		</script>
+</script>
 
-	</head>
-	<body>
-		<div class="navbar">
-			<div class="navbar-inner">
-				<!-- <div class="container vcentered"> -->
-				<a class="brand vcentered" href="#"><img src="./logo.png" alt="Dionysus - alcoholgenome.com" class="logo"></a>
-				<ul class="nav">
-					<li class="active"><a href="#">Beer</a></li>
-					<li><a href="#">Wine</a></li>
-					<li><a href="#">Whiskey</a></li>
-					<li class="divider-vertical"></li>
-					<li><a href="#">How It Works</a></li>
-					<li><a href='mailto:dionysus@alcoholgenome.com?subject=[Dionysus Contact] '>Contact</a></li>
-				</ul>
-				<!-- </div> -->
-			</div>
+</head>
+<body>
+	<div class="navbar">
+		<div class="navbar-inner">
+			<!-- <div class="container vcentered"> -->
+			<a class="brand vcentered" href="#"><img src="./logo.png" alt="Dionysus - alcoholgenome.com" class="logo"></a>
+			<ul class="nav">
+				<li class="active"><a href="#">Beer</a></li>
+				<li><a href="#">Wine</a></li>
+				<li><a href="#">Whiskey</a></li>
+				<li class="divider-vertical"></li>
+				<li><a href="#">How It Works</a></li>
+				<li><a href='mailto:dionysus@alcoholgenome.com?subject=[Dionysus Contact] '>Contact</a></li>
+			</ul>
+			<!-- </div> -->
 		</div>
+	</div>
 
-		<div class="page-header row-fluid">
+	<div class="page-header row-fluid">
+		<span class="span8 offset2">
+			<h2>Beer Recommendations!</h2> Search in and around:
+
+			<select id="state" size="1"> 
+				<option value="" >All States</option> 
+				<option value="AL">AL - Alabama</option> 
+				<option value="AK">AK - Alaska</option> 
+				<option value="AZ">AZ - Arizona</option> 
+				<option value="AR">AR - Arkansas</option> 
+				<option value="CA">CA - California</option> 
+				<option value="CO">CO - Colorado</option> 
+				<option value="CT">CT - Connecticut</option> 
+				<option value="DE">DE - Delaware</option> 
+				<option value="DC">DC - District Of Columbia</option> 
+				<option value="FL">FL - Florida</option> 
+				<option value="GA">GA - Georgia</option> 
+				<option value="HI">HI - Hawaii</option> 
+				<option value="ID">ID - Idaho</option> 
+				<option value="IL">IL - Illinois</option> 
+				<option value="IN">IN - Indiana</option> 
+				<option value="IA">IA - Iowa</option> 
+				<option value="KS">KS - Kansas</option> 
+				<option value="KY">KY - Kentucky</option> 
+				<option value="LA">LA - Louisiana</option> 
+				<option value="ME">ME - Maine</option> 
+				<option value="MD">MD - Maryland</option> 
+				<option value="MA">MA - Massachusetts</option> 
+				<option value="MI">MI - Michigan</option> 
+				<option value="MN">MN - Minnesota</option> 
+				<option value="MS">MS - Mississippi</option> 
+				<option value="MO">MO - Missouri</option> 
+				<option value="MT">MT - Montana</option> 
+				<option value="NE">NE - Nebraska</option> 
+				<option value="NV">NV - Nevada</option> 
+				<option value="NH">NH - New Hampshire</option> 
+				<option value="NJ">NJ - New Jersey</option> 
+				<option value="NM">NM - New Mexico</option> 
+				<option value="NY">NY - New York</option> 
+				<option value="NC">NC - North Carolina</option> 
+				<option value="ND">ND - North Dakota</option> 
+				<option value="OH">OH - Ohio</option> 
+				<option value="OK">OK - Oklahoma</option> 
+				<option value="OR">OR - Oregon</option> 
+				<option value="PA">PA - Pennsylvania</option> 
+				<option value="RI" selected="selected">RI - Rhode Island</option> 
+				<option value="SC">SC - South Carolina</option> 
+				<option value="SD">SD - South Dakota</option> 
+				<option value="TN">TN - Tennessee</option> 
+				<option value="TX">TX - Texas</option> 
+				<option value="UT">UT - Utah</option> 
+				<option value="VT">VT - Vermont</option> 
+				<option value="VA">VA - Virginia</option> 
+				<option value="WA">WA - Washington</option> 
+				<option value="WV">WV - West Virginia</option> 
+				<option value="WI">WI - Wisconsin</option> 
+				<option value="WY">WY - Wyoming</option>
+			</select>
+		</span>
+	</div>
+
+	<div class="row-fluid">
+		<span class="span8 offset2">
+			<div id="searchinstruct" class="lead"> Enter your favorite beers and we'll suggest others we think you'll love: </div>
+
+
+			
+
+			<select multiple id="search">
+			</select>
+
+
+			<!-- <input id="search" type="hidden"> -->
+
+		</span>
+	</div>
+
+	<br>
+
+	<div id="results" class="invisible">
+		<div class="row-fluid">
+
 			<span class="span8 offset2">
-				<h2>Beer Recommendations!</h2>
+				<span class="lead">
+					Our Suggestions: 
+					<!-- <span id="loading" class="invisible"><img src="waiting.gif"></span> -->
+				</span>
 			</span>
 		</div>
 
 		<div class="row-fluid">
 			<span class="span8 offset2">
-				<div id="searchinstruct" class="lead"> Enter your favorite beers and we'll suggest others we think you'll love: </div>
 
-				<select multiple id="search">
-				</select>
+				<table id="search_results" class="table">
+					<thead>
+						<tr>
+							<th>Name</th>
+							<th>Brewery</th>
+							<th>Style</th>
+							<th>BeerAdvocate.com Rating</th>
+						</tr>
+					</thead>
+				</table>
 
-
-				<!-- <input id="search" type="hidden"> -->
 
 			</span>
 		</div>
+	</div>
 
-		<br>
-
-		<div id="results" class="invisible">
-			<div class="row-fluid">
-
-				<span class="span8 offset2">
-					<span class="lead">
-						Our Suggestions: 
-						<!-- <span id="loading" class="invisible"><img src="waiting.gif"></span> -->
-					</span>
-				</span>
-			</div>
-
-			<div class="row-fluid">
-				<span class="span8 offset2">
-					
-					<table id="search_results" class="table">
-						<thead>
-							<tr>
-								<th>Name</th>
-								<th>Brewery</th>
-								<th>Style</th>
-								<th>BeerAdvocate Rating</th>
-							</tr>
-						</thead>
-					</table>
-
-
-				</span>
-			</div>
-		</div>
-
-	</body>
-	</html>
+</body>
+</html>
