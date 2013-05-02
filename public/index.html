@@ -15,8 +15,15 @@
 	<script src="http://code.jquery.com/jquery-migrate-1.1.1.min.js"></script>
 
 	<!-- boostrap -->
-	<link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css" rel="stylesheet">
-	<script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/js/bootstrap.min.js"></script>
+
+<link type="text/css" rel="stylesheet" href="//cdn.jsdelivr.net/bootstrap/2.3.1/css/bootstrap.min.css" />
+<link type="text/css" rel="stylesheet" href="//cdn.jsdelivr.net/bootstrap/2.3.1/css/bootstrap.css" />
+<script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap/2.3.1/js/bootstrap-tooltip.js"></script>
+<script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap/2.3.1/js/bootstrap-popover.js"></script>
+
+<script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap/2.3.1/js/bootstrap.js"></script>
+<script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap/2.3.1/js/bootstrap.min.js"></script>
+
 
 	<!-- Select2 -->
 	<link type="text/css" rel="stylesheet" href="//cdn.jsdelivr.net/select2/3.3.1/select2.css" />
@@ -33,11 +40,46 @@
 
 	<script>
 
+	function buildResultsTable (results) {
+
+
+		var table = '<table id="search_results" class="table">' +
+					'<thead>' + 
+						'<tr>' + 
+						'<th>Name</th>' +
+							'<th>Brewery</th>' +
+							'<th>Style</th>' +
+							'<th>BeerAdvocate.com Rating</th>' +
+							'<th></th>' +
+						'</tr>' + 
+					'</thead>' +
+					'<tbody>';
+
+		for (var r = 0; r < results.length; r++) {
+			table += '<tr>' + 
+						'<td>' + results[r]["Name"] + '</td>' + 
+						'<td>' + results[r]["Brewery"] + '</td>' +
+						'<td>' + results[r]["Style"] + '</td>' +
+						'<td>' + results[r]["BeerAdvocate Rating"] + '</td>' +
+						'<td>' + results[r]["Explanation"] +
+						// '<a href="#" class="btn" data-placement="right" data-toggle="popover" title="A Title" data-content="Test">Why?</a>'+
+						// '<div class="popover fade right in" style="top: 12.5px; left: 247px; display: block;"><div class="arrow"></div><div class="popover-content">Test</div></div>' +
+
+						'</td>' +
+						'</tr>';
+		}
+
+
+		table += '</tbody></table>';
+
+		return table;
+	}
+
 
 	$(document).ready(function() {
 
 			// create empty search bar
-			$("#search").prop("disabled", true);
+			// $("#search").prop("disabled", true);
 			$('#search').select2({
 				placeholder: 'Loading Beers... (we\'re loading up 10,000 beers, give us a sec)',
 				width: '100%'
@@ -54,12 +96,12 @@
 						.text(value)); 
 				});
 				$('#search').select2({
-					placeholder: "Type some of your favorite beers...",
+					placeholder: 'Type some of your favorite beers...',
 					width: "100%",
 					minimumInputLength: 3
 
 				});
-				$("#search").prop("disabled", false);
+				// $("#search").prop("disabled", false);
 			});
 
 
@@ -76,7 +118,10 @@
 				$.post('/search', to_send, function (response) {
 					var new_results = response;
 
-					new_results = ConvertJsonToTable(response, 'search_results');
+					// new_results = ConvertJsonToTable(response, 'search_results');
+					// console.log(new_results);
+					console.log(response);
+					new_results = buildResultsTable(response);
 					$('#search_results').html(new_results);
 
 					if (new_results.length == 0) {

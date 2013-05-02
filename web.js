@@ -66,7 +66,6 @@ var query = db_client.query(query_string, function(err, result) {
 		if (row.locations.indexOf('\'' + state + '\'') != -1) {
 			return true;
 		} else {
-			console.log("This beer is not available in " + state + ": " + row.name);
 			return false;
 		}
 	});

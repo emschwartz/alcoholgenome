@@ -1,6 +1,6 @@
 # coding=utf-8
 
-import csv, urllib
+import csv, urllib, datetime
 
 from beerRater import *
 from webScraper import *
@@ -115,8 +115,12 @@ def createDBFrom (start_url='http://beeradvocate.com/beer/style/', pages_per_sty
 			createDBFrom(style_link, pages_per_style, output_filename)
 
 
-def dionysus (start_url='http://beeradvocate.com/beer/style/', pages_per_style=5, output_filename=
+def dionysus (start_url='http://beeradvocate.com/beer/style/', pages_per_style=20, output_filename=
 	'dionysusDatabase.csv'):
+
+	if output_filename == 'dionysusDatabase.csv':
+		now = datetime.datetime.now()
+		output_filename = 'dionysusDatabase' + now.strftime("%m.%d_%H.%M") + '.csv'
 
 	createDBFrom(start_url, pages_per_style, output_filename)
 

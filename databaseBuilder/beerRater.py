@@ -27,9 +27,11 @@ def countBeerWordsInText (review, beerWords={}):
     for category in beerWords:
         category_count = 0
 
+        print "started counting beer words"
         for word in beerWords[category]:
             category_count += review.count(word)
 
+        print "finished counting beer words"
         category_matches[category] = category_count
 
     return category_matches

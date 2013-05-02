@@ -28,11 +28,13 @@ def getBrewery (page_parser):
 def getStyle (page_parser):
 	# get the beer style
 	style_link = page_parser.find(href=re.compile(r'/beer/style/\d+'))
-	if style_link != None or style_link.b != None:
-		beer_style = style_link.b.renderContents()
-	else:
-		beer_style = style_link.renderContents()
-	return beer_style
+	if style_link != None:
+		if style_link.b != None:
+			beer_style = style_link.b.renderContents()
+		else:
+			beer_style = style_link.renderContents()
+		return beer_style
+	return None
 
 def getNumReviews(page_parser):
 	review_array = page_parser.find_all(id="rating_fullview_content_2")
@@ -93,7 +95,7 @@ def parseBeerPage (url_string):
 
 	reviews_page = 0
 	# iterate through all of the pages of reviews to ...
-	while html_page.find('<b>next &rsaquo;</b>') != -1 and reviews_page < 4:
+	while reviews_page == 0 or html_page.find('<b>next &rsaquo;</b>') != -1 and reviews_page < 4:
 
 		# open the next page of reviews
 		next_link = url_string + '/?view=beer&sort=&start=' + str(reviews_page * 25)
