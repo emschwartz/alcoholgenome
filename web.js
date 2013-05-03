@@ -28,24 +28,54 @@ function returnSimilarBeers(rows, express_response, db_client) {
 
 
 function sortBeerResults(quality_averages, rows) {
-	console.log(quality_averages);
-	console.log(rows);
+	for (var r = 0; r < rows.length; r++){
+		var row = rows[r];
+		var diff_score = 0;
+		var category_weights = [.8, .6, .4, .2, 0];
+		// console.log(row);
+		for (var q = 0; q < 5; q++) {
+			var quality = Object.keys(quality_averages)[q];
+			diff_score += category_weights[q] * Math.abs(quality_averages[quality] - row[quality]);
+		}
+
+		if (row.rating < 90){
+			diff_score += (90 - row.rating);
+		}
+
+		var final_score = Math.round(100 - (diff_score ));
+		row.score = Math.round(final_score / 10);
+	}
+
+	rows.sort(function(a, b){return b.score - a.score});
+
+	return rows;
 }
 
+function removeSearchedForBeers (beers, searched_beer_names) {
+	var to_return = [];
+	for (var b = 0; b < beers.length; b++) {
+		if (searched_beer_names.indexOf(beers[b].name + " - " + beers[b].brewery) == -1) {
+			to_return.push(beers[b]);
+		}
+	}
+	return to_return;
+}
 
-
-function findSimilarBeersTo(db_client, quality_averages, express_response) {
-	console.log(quality_averages);
+function findSimilarBeersTo(db_client, beer_names, quality_averages, express_response) {
+	// console.log(quality_averages);
 	var qualities = [];
 	for (property in quality_averages) {
 		qualities.push({"property" : property, "average" : quality_averages[property]});
 	}
 	qualities.sort(function(a, b){return Math.abs(b.average) - Math.abs(a.average)});
 
-	var query_string = "select * from alcoholgenome where (";
+	var quality_ranges = [15, 20, 30, 40, 75];
+
+	var query_string = "select distinct * from alcoholgenome where (";
+		query_string += "(numreviews >= 100) and ";
 		for (var q = 0; q < 5; q++) {
-			query_string += "(" + qualities[q].property + "<=" + (qualities[q].average + 25) + ") and ";
-			query_string += "(" + qualities[q].property + ">=" + (qualities[q].average - 25) + ") and ";
+			query_string += "(" + qualities[q].property + "<=" + (qualities[q].average + quality_ranges[q]) + ") and ";
+			query_string += "(" + qualities[q].property + ">=" + (qualities[q].average - quality_ranges[q]) + ") and ";
 		}
 
 		for (var q = 5; q < 10; q++) {
@@ -53,13 +83,15 @@ function findSimilarBeersTo(db_client, quality_averages, express_response) {
 			query_string += "(" + qualities[q].property + ">=" + (qualities[q].average - .99) + ") and ";
 		}
 
-		query_string = query_string.substring(0, query_string.length - 4) + ") order by rating desc limit 100";
+		query_string = query_string.substring(0, query_string.length - 4) + ")";
+		// query_string += "order by rating desc limit 100";
 
 var query = db_client.query(query_string, function(err, result) {
 	if (err) throw err;
 	
 	var sorted_beers = sortBeerResults(quality_averages, result.rows);
-	// returnSimilarBeers(sorted_beers, express_response, db_client);
+	sorted_beers = removeSearchedForBeers(sorted_beers, beer_names);
+	returnSimilarBeers(sorted_beers, express_response, db_client);
 	
 });
 }
@@ -67,7 +99,7 @@ var query = db_client.query(query_string, function(err, result) {
 
 
 function searchForSimilarBeers(db_client, beer_names, express_response) {
-	var query_string = "select * from alcoholgenome where (";
+	var query_string = "select distinct * from alcoholgenome where (";
 		for (var n = 1; n < beer_names.length + 1; n++){
 			query_string = query_string + "(name=$" + (2 * n - 1) + " and " + "brewery=$" + (2 * n) + ") or "; 
 		}
@@ -87,7 +119,18 @@ var query = db_client.query(query_string, query_values, function(err, result) {
 	if (err) throw err;
 
 	if (result) {
-		var quality_averages = {"lightscore" : 0, "darkscore" : 0, "sweetscore" : 0, "fruitscore" : 0, "carbonation" : 0, "spice" : 0};
+		var quality_averages = {
+			"lightscore" : 0, 
+			"darkscore" : 0,
+			"fruitscore" : 0,
+			"sweetscore" : 0, 
+			"bitterscore" : 0,
+			"carbonationscore" : 0, 
+			"roastedscore" : 0,
+			"spicescore" : 0,
+			"sourscore" : 0,
+			"smokeyscore" : 0
+		};
 
 		for (var r = 0; r < result.rowCount; r++) {
 			for (property in quality_averages) {
@@ -97,7 +140,7 @@ var query = db_client.query(query_string, query_values, function(err, result) {
 		for (property in quality_averages) {
 			quality_averages[property] = quality_averages[property]/result.rowCount;
 		}
-		findSimilarBeersTo(db_client, quality_averages, express_response);
+		findSimilarBeersTo(db_client, beer_names, quality_averages, express_response);
 	}
 });
 }
@@ -108,10 +151,10 @@ app.get('/get_beer_list', function(req, res) {
 
 	var outer_res = res;
 	var name_list = [];
-	console.log("Server caught GET request /get_beer_list");
+	// console.log("Server caught GET request /get_beer_list");
 
 	pg.connect(connectionString, function (err, client) {
-		var query = client.query("select name, brewery from alcoholgenome order by name asc");
+		var query = client.query("select distinct name, brewery from alcoholgenome order by name asc");
 
 		query.on('row', function (row) {
 			name_list.push(row.name + " - " + row.brewery);

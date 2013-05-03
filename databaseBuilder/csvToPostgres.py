@@ -98,10 +98,12 @@ def csvToPostgres(csv_filename, table_name=''):
 			SmokeyScore int)'
 		cur.execute(table_creation_string)
 
+		# cur.execute('alter table ' + table_name + ' add constraint unique_beers unique (name, brewery)')
+
 		counts_startcol = 7
 		totalcount_col = 17
 		category_avgs = getCategoryAvgs(csv_filename, counts_startcol, totalcount_col)
-		print category_avgs
+		# print category_avgs
 
 		for row in csvreader:
 
@@ -130,7 +132,7 @@ def csvToPostgres(csv_filename, table_name=''):
 							category_score = 0
 
 					row.append(category_score)
-					print category_score
+					# print category_score
 				else:
 					row.append(0)
 
@@ -156,19 +158,22 @@ def csvToPostgres(csv_filename, table_name=''):
 				TotalCount, \
 				LightScore, \
 				DarkScore, \
-				RoastedScore, \
+				FruitScore, \
 				SweetScore, \
 				BitterScore, \
 				CarbonationScore, \
-				FruitScore, \
+				RoastedScore, \
 				SpiceScore, \
 				SourScore, \
 				SmokeyScore)'
 			insert_string += ' values (' + '%s,'*28 
 			insert_string = insert_string[0 : (len(insert_string) - 1)]
 			insert_string += ')'
-			cur.execute(insert_string, row)
-
+			try:
+				cur.execute(insert_string, row)
+			except psycopg2.IntegrityError:
+				# conn.rollback()
+				print "had duplicate"
 
 
 	conn.commit()
