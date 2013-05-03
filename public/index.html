@@ -46,10 +46,10 @@
 		var table = '<table id="search_results" class="table">' +
 					'<thead>' + 
 						'<tr>' + 
-						'<th>Name</th>' +
+							'<th>Name</th>' +
 							'<th>Brewery</th>' +
 							'<th>Style</th>' +
-							'<th>BeerAdvocate.com Rating</th>' +
+							'<th>Score</th>' +
 							'<th></th>' +
 						'</tr>' + 
 					'</thead>' +
@@ -112,20 +112,17 @@
 				console.log("searching for: " + search_query);
 				to_send = {
 					"search_items" : search_query,
-					"state": state
+					// "state": state
 				};
 
 				$.post('/search', to_send, function (response) {
 					var new_results = response;
-
-					// new_results = ConvertJsonToTable(response, 'search_results');
-					// console.log(new_results);
 					console.log(response);
 					new_results = buildResultsTable(response);
 					$('#search_results').html(new_results);
 
 					if (new_results.length == 0) {
-						// $("#results").removeClass("visible");
+						$("#results").removeClass("visible");
 						$("#results").addClass("invisible");
 					} else {
 						$("#results").removeClass("invisible");
@@ -161,7 +158,8 @@
 
 	<div class="page-header row-fluid">
 		<span class="span8 offset2">
-			<h2>Beer Recommendations!</h2> Search in and around:
+			<h2>Beer Recommendations!</h2> 
+			<!-- Search in and around:
 
 			<select id="state" size="1"> 
 				<option value="" >All States</option> 
@@ -216,7 +214,7 @@
 				<option value="WV">WV - West Virginia</option> 
 				<option value="WI">WI - Wisconsin</option> 
 				<option value="WY">WY - Wyoming</option>
-			</select>
+			</select> -->
 		</span>
 	</div>
 

@@ -71,7 +71,6 @@ def addBeerToDBFile (beer):
 	global csvfile, csvwriter
 	if csvfile == None or csvwriter == None:
 		createDBFile(beer)
-
 	row = prepareDBRow(beer)
 	csvwriter.writerow(row)
 
@@ -81,18 +80,30 @@ def addBeerToDBFile (beer):
 def addToDBFromStyle (style_url, pages_per_style=20):
 	beer_links = getBeerLinksFromStyle(style_url, pages_per_style)
 	beers = []
-	for link in beer_links:
-		beer = parseBeerPage(link)
+	for b in range(0, len(beer_links)):
+		beer = parseBeerPage(beer_links[b])
+
 		if beer != None:
 			addBeerToDBFile(beer)
+			print "\t" + str(b) + "/" + str(len(beer_links)) + ": " + str(beer["Link"])
+			if beer["Num Reviews"] < 10:
+				return
 
 
 
-def addToDBFromAllStyles (beers_per_style=20):
+def addToDBFromAllStyles (pages_per_style=20):
 	style_links = getAllStyleLinks()
 	for s in range(0, len(style_links)):
-		print "processing style " + str(s) + "/" + str(len(style_links))
-		addToDBFromStyle(style_links[s], beers_per_style)
+		print "style " + str(s) + "/" + str(len(style_links)) + ": " + str(style_links[s])
+		
+		style_start_time = datetime.datetime.now()
+	
+		addToDBFromStyle(style_links[s], pages_per_style)
+
+		style_stop_time = datetime.datetime.now()
+		time_diff = style_stop_time - style_start_time
+		print str(time_diff.total_seconds())
+
 	csvfile.close()
 
 

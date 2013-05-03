@@ -6,7 +6,10 @@ from bs4 import BeautifulSoup
 
 
 def getName (page_parser):
-	page_title = page_parser.title.renderContents()
+	page_title = page_parser.title
+	if page_title == None:
+		return None
+	page_title = page_title.renderContents()
 	beer_name = page_title[ : page_title.find(' -')]
 	return beer_name
 
@@ -22,7 +25,10 @@ def getRating (page_parser):
 
 
 def getBrewery (page_parser):
-	page_title = page_parser.title.renderContents()
+	page_title = page_parser.title
+	if page_title == None:
+		return None
+	page_title = page_title.renderContents()
 	brewery_start = page_title.find('- ') + 2
 	brewer_end = page_title.find(' -', brewery_start)
 	brewery_name = page_title[brewery_start : brewer_end]

@@ -1,6 +1,6 @@
 # coding=utf-8
 
-import urllib, re, random
+import urllib, re, datetime, random
 from bs4 import BeautifulSoup
 
 from beerAdvocateBeerPageParser import parseBeerPage, openURL
