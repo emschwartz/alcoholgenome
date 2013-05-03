@@ -42,7 +42,7 @@ function sortBeerResults(quality_averages, rows) {
 			diff_score += (90 - row.rating);
 		}
 
-		var final_score = Math.round(100 - (diff_score ));
+		var final_score = Math.round(100 - (diff_score / 1.3 ));
 		row.score = Math.round(final_score / 10);
 	}
 
@@ -69,7 +69,7 @@ function findSimilarBeersTo(db_client, beer_names, quality_averages, express_res
 	}
 	qualities.sort(function(a, b){return Math.abs(b.average) - Math.abs(a.average)});
 
-	var quality_ranges = [15, 20, 30, 40, 75];
+	var quality_ranges = [25, 35, 45, 65, 120];
 
 	var query_string = "select distinct * from alcoholgenome where (";
 		query_string += "(numreviews >= 100) and ";
