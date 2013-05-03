@@ -91,6 +91,7 @@ var query = db_client.query(query_string, function(err, result) {
 	
 	var sorted_beers = sortBeerResults(quality_averages, result.rows);
 	sorted_beers = removeSearchedForAndLowRatedBeers(sorted_beers, beer_names);
+	sorted_beers = sorted_beers.slice(0, 100);
 	returnSimilarBeers(sorted_beers, express_response, db_client);
 	
 });
