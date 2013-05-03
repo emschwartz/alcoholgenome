@@ -51,10 +51,10 @@ function sortBeerResults(quality_averages, rows) {
 	return rows;
 }
 
-function removeSearchedForBeers (beers, searched_beer_names) {
+function removeSearchedForAndLowRatedBeers (beers, searched_beer_names) {
 	var to_return = [];
 	for (var b = 0; b < beers.length; b++) {
-		if (searched_beer_names.indexOf(beers[b].name + " - " + beers[b].brewery) == -1) {
+		if (beers[b].rating >= 75 && searched_beer_names.indexOf(beers[b].name + " - " + beers[b].brewery) == -1) {
 			to_return.push(beers[b]);
 		}
 	}
@@ -90,7 +90,7 @@ var query = db_client.query(query_string, function(err, result) {
 	if (err) throw err;
 	
 	var sorted_beers = sortBeerResults(quality_averages, result.rows);
-	sorted_beers = removeSearchedForBeers(sorted_beers, beer_names);
+	sorted_beers = removeSearchedForAndLowRatedBeers(sorted_beers, beer_names);
 	returnSimilarBeers(sorted_beers, express_response, db_client);
 	
 });
