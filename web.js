@@ -54,9 +54,14 @@ function sortBeerResults(quality_averages, rows) {
 function removeSearchedForAndLowRatedBeers (beers, searched_beer_names) {
 	var to_return = [];
 	for (var b = 0; b < beers.length; b++) {
-		if (beers[b].rating >= 75 && searched_beer_names.indexOf(beers[b].name + " - " + beers[b].brewery) == -1) {
-			to_return.push(beers[b]);
-		}
+		if (beers[b].rating < 75)
+			continue;
+		if (beers[b].score < 5)
+			continue;
+		if (searched_beer_names.indexOf(beers[b].name + " - " + beers[b].brewery) != -1) 
+			continue;
+
+		to_return.push(beers[b]);
 	}
 	return to_return;
 }
