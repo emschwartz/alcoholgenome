@@ -26,7 +26,8 @@
 
 img.logo {
 	padding: 0;
-	width: 20%;
+	width: 30%;
+	min-width: 300px;
 }
 
 .state_select {

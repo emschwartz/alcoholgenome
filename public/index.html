@@ -109,7 +109,6 @@
 			$("#search").change( function() {
 				var search_query = $("#search").val(),
 				state = $('#state').val();
-				console.log("searching for: " + search_query);
 				to_send = {
 					"search_items" : search_query,
 					// "state": state
@@ -117,14 +116,16 @@
 
 				$.post('/search', to_send, function (response) {
 					var new_results = response;
-					console.log(response);
-					new_results = buildResultsTable(response);
-					$('#search_results').html(new_results);
-
-					if (new_results.length == 0) {
+					console.log(new_results);
+					console.log({});
+					console.log(new_results == []);
+					if (new_results.length == 0 || new_results == {} || new_results == []) {
 						$("#results").removeClass("visible");
 						$("#results").addClass("invisible");
+						console.log("made results invisible");
 					} else {
+						new_results = buildResultsTable(response);
+						$('#search_results').html(new_results);
 						$("#results").removeClass("invisible");
 						$("#results").addClass("visible");
 					}
@@ -220,7 +221,7 @@
 
 	<div class="row-fluid">
 		<span class="span8 offset2">
-			<div id="searchinstruct" class="lead"> Enter your favorite beers and we'll suggest others we think you'll love: </div>
+			<div id="searchinstruct" class="lead"> Enter your favorite beers and we'll suggest others you'll love: </div>
 
 
 			
