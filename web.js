@@ -1,7 +1,5 @@
 var express = require("express"),
 pg = require('pg'),
-ayah = require('ayah'),
-fs = require('fs'),
 connectionString = process.env.DATABASE_URL || 'postgres://eschwartz@localhost:5432/';
 
 pg.defaults.poolSize = 10000;
@@ -196,23 +194,10 @@ app.post('/search', function(req, res) {
 });
 
 
-var ayah_config;
-try {
-	ayah_config = fs.readFileSync('ayah_config.json'); // {"publisherKey": "abc…", "scoringKey": "0123…"}
-	ayah_config = JSON.parse(ayah_config);
-} catch (e) {
-	process.exit(1);
-}
-if (ayah_config.publisherKey.indexOf("get your") === 0) {
-	console.log(ayah_config.publisherKey);
-	console.log(ayah_config.scoringKey);
-	process.exit(1);
-}
-ayah.configure(ayah_config.publisherKey, ayah_config.scoringKey);
+// app.get('/', function(req, res){
+	
+// });
 
-app.post('/ayah', function(req, res) {
-	res.send(ayah.getPublisherHTML());
-});
 
 
 
