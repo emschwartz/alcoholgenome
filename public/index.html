@@ -23,7 +23,9 @@
 
 	<script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap/2.3.1/js/bootstrap.js"></script>
 	<script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap/2.3.1/js/bootstrap.min.js"></script>
-
+<!-- 
+	<script type="text/javascript" src="https://ws.areyouahuman.com/ws/script/7571a9ef9a71b873292246c50fe4a7a1ab5fa851"></script>
+ -->
 
 	<!-- Select2 -->
 	<link type="text/css" rel="stylesheet" href="//cdn.jsdelivr.net/select2/3.3.1/select2.css" />
@@ -167,6 +169,7 @@
 						$("#results").removeClass("invisible");
 						$("#results").addClass("visible");
 						$("#email").attr("href", createMailToLink(search_query, new_results));
+						// $('#search_results_input').val(search_query);
 
 					}
 
@@ -174,6 +177,12 @@
 
 				});
 			});
+
+			// $("#emailform").submit(function() {
+			// 	// $('#emailbutton').replaceWith('<form><div id="AYAH"></div><input type="submit"></form>');
+			// 	alert($("#emailform").val().session_secret);
+				
+			// });
 
 
 			
@@ -272,11 +281,6 @@
 			<select multiple id="search">
 			</select>
 
-
-
-
-			<!-- <input id="search" type="hidden"> -->
-
 		</span>
 	</div>
 
@@ -293,8 +297,13 @@
 			</span>
 
 		
-				<a id="email" href="" class="btn btn-primary pull-right"><i class="icon-envelope icon-white"></i> Email Top Results</a>
-		
+				<a id="email" href="" class="btn btn-primary btn-small pull-right"><i class="icon-envelope icon-white"></i> Email Top Results</a>
+<!-- 
+				<form id="emailform">
+				<div id="AYAH"></div>
+				<input type="hidden" id="search_results_input" value="">
+				<input id="emailbutton" class="btn btn-primary pull-right" type="submit" value="Email Results">
+				</form> -->
 
 		</span>
 
