@@ -16,13 +16,13 @@
 
 	<!-- boostrap -->
 
-<link type="text/css" rel="stylesheet" href="//cdn.jsdelivr.net/bootstrap/2.3.1/css/bootstrap.min.css" />
-<link type="text/css" rel="stylesheet" href="//cdn.jsdelivr.net/bootstrap/2.3.1/css/bootstrap.css" />
-<script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap/2.3.1/js/bootstrap-tooltip.js"></script>
-<script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap/2.3.1/js/bootstrap-popover.js"></script>
+	<link type="text/css" rel="stylesheet" href="//cdn.jsdelivr.net/bootstrap/2.3.1/css/bootstrap.min.css" />
+	<link type="text/css" rel="stylesheet" href="//cdn.jsdelivr.net/bootstrap/2.3.1/css/bootstrap.css" />
+	<script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap/2.3.1/js/bootstrap-tooltip.js"></script>
+	<script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap/2.3.1/js/bootstrap-popover.js"></script>
 
-<script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap/2.3.1/js/bootstrap.js"></script>
-<script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap/2.3.1/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap/2.3.1/js/bootstrap.js"></script>
+	<script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap/2.3.1/js/bootstrap.min.js"></script>
 
 
 	<!-- Select2 -->
@@ -37,6 +37,17 @@
 	<link href="dionysus.css" rel="stylesheet">
 	<link rel='shortcut icon' href='./favicon_32.ico' />
 
+	<script>
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+	ga('create', 'UA-40674809-1', 'alcoholgenome.com');
+	ga('send', 'pageview');
+
+	</script>
+
 
 	<script>
 
@@ -44,39 +55,69 @@
 
 
 		var table = '<table id="search_results" class="table">' +
-					'<thead>' + 
-						'<tr>' + 
-							'<th>Name</th>' +
-							'<th>Brewery</th>' +
-							'<th>Style</th>' +
-							'<th>Odds You\'ll Love It</th>' +
-							'<th></th>' +
-						'</tr>' + 
-					'</thead>' +
-					'<tbody>';
+		'<thead>' + 
+		'<tr>' + 
+		'<th>Name</th>' +
+		'<th>Brewery</th>' +
+		'<th>Style</th>' +
+		'<th>Odds You\'ll Love It</th>' +
+		'<th></th>' +
+		'</tr>' + 
+		'</thead>' +
+		'<tbody>';
 
 		for (var r = 0; r < results.length; r++) {
 			table += '<tr>' + 
-						'<td>' + results[r]["Name"] + '</td>' + 
-						'<td>' + results[r]["Brewery"] + '</td>' +
-						'<td>' + results[r]["Style"] + '</td>' +
-						'<td>' + results[r]["Score"] + "/10" + '</td>' +
+			'<td>' + results[r]["Name"] + '</td>' + 
+			'<td>' + results[r]["Brewery"] + '</td>' +
+			'<td>' + results[r]["Style"] + '</td>' +
+			'<td>' + results[r]["Score"] + "/10" + '</td>' +
 						// '<td>' + results[r]["Explanation"] +
 						// '<a href="#" class="btn" data-placement="right" data-toggle="popover" title="A Title" data-content="Test">Why?</a>'+
 						// '<div class="popover fade right in" style="top: 12.5px; left: 247px; display: block;"><div class="arrow"></div><div class="popover-content">Test</div></div>' +
 
 						'</td>' +
 						'</tr>';
+					}
+
+
+					table += '</tbody></table>';
+
+					return table;
+				}
+
+	function createMailToLink (search_query, results) {
+		var mailto = "mailto: ?subject=Dionysus%20Beer%20Recommendations&body=";
+		var body = "When%20you%20searched%20the%20Alcohol%20Genome%20Project%20for:%0d%0d";
+		for (var s = 0; s < search_query.length; s++) {
+			body += search_query[s] + ", ";
+		}
+		body = body.substring(0, body.length-2);
+		body += "%0d%0d%0dThe Top Recommendations Were:%0d%0d";
+
+		for (var r = 0; r < results.length; r++) {
+			if (body.length >= 1000) {
+				break;
+			}
+
+			var name = results[r].Name;
+			name = name.substring(name.indexOf('>') + 1);
+			name = name.substring(0, name.indexOf('<'));
+			name = encodeURI(name);
+			var brewery = encodeURI(results[r].Brewery);
+			body += (r+1) + ".%20" + name + "%20-%20" + brewery;
+			body += "%0d";
 		}
 
-
-		table += '</tbody></table>';
-
-		return table;
+		body += "%0dFind%20the%20full%20results%20at%20http%3A%2F%2Falcoholgenome.com";
+		body = body.replace(/&amp;/g, '%26')
+		console.log(body);
+		mailto += body;
+		return mailto;
 	}
 
 
-	$(document).ready(function() {
+				$(document).ready(function() {
 
 			// create empty search bar
 			// $("#search").prop("disabled", true);
@@ -108,7 +149,7 @@
 			// automatically send search bar selections to the server and display results
 			$("#search").change( function() {
 				var search_query = $("#search").val(),
-				state = $('#state').val();
+				// state = $('#state').val();
 				to_send = {
 					"search_items" : search_query,
 					// "state": state
@@ -116,26 +157,28 @@
 
 				$.post('/search', to_send, function (response) {
 					var new_results = response;
-					console.log(new_results);
-					console.log({});
-					console.log(new_results == []);
-					if (new_results.length == 0 || new_results == {} || new_results == []) {
+					if (new_results.length == undefined) {
 						$("#results").removeClass("visible");
 						$("#results").addClass("invisible");
 						console.log("made results invisible");
 					} else {
-						new_results = buildResultsTable(response);
-						$('#search_results').html(new_results);
+						results_table = buildResultsTable(response);
+						$('#search_results').html(results_table);
 						$("#results").removeClass("invisible");
 						$("#results").addClass("visible");
+						$("#email").attr("href", createMailToLink(search_query, new_results));
+
 					}
 
 					
 
 				});
-});
+			});
 
-});
+
+			
+
+		});
 
 </script>
 
@@ -243,13 +286,21 @@
 		<div class="row-fluid">
 
 			<span class="span8 offset2">
+			<span class="span4">
 				<span class="lead">
 					Our Suggestions: 
-					<!-- <span id="loading" class="invisible"><img src="waiting.gif"></span> -->
 				</span>
 			</span>
+
+		
+				<a id="email" href="" class="btn btn-primary pull-right"><i class="icon-envelope icon-white"></i> Email Top Results</a>
+		
+
+		</span>
+
 		</div>
 
+		<br>
 		<div class="row-fluid">
 			<span class="span8 offset2">
 
