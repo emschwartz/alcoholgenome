@@ -195,9 +195,12 @@ app.post('/search', function(req, res) {
 
 
 // app.get('/', function(req, res){
-	
+
 // });
 
+app.get('/', function(req, res) {
+	res.redirect('beer.html')
+});
 
 
 

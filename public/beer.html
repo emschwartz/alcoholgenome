@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta name="description" content="Alcohol recommendation app by the Alcohol Genome Project">
+	<meta name="keywords" content="alcohol,beer,wine,whiskey,pandora,recommendation,suggestion,review,beeradvocate">
+	<meta name="author" content="Evan Schwartz">
+	<meta charset="utf-8">
+
+	<title>
+		Dionysus Beer Recommendations - The Alcohol Genome Project
+	</title>
+
+	<!-- jQuery -->
+	<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+	<script src="http://code.jquery.com/jquery-migrate-1.1.1.min.js"></script>
+
+	<!-- boostrap -->
+
+	<link type="text/css" rel="stylesheet" href="//cdn.jsdelivr.net/bootstrap/2.3.1/css/bootstrap.min.css" />
+	<link type="text/css" rel="stylesheet" href="//cdn.jsdelivr.net/bootstrap/2.3.1/css/bootstrap.css" />
+	<script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap/2.3.1/js/bootstrap-tooltip.js"></script>
+	<script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap/2.3.1/js/bootstrap-popover.js"></script>
+
+	<script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap/2.3.1/js/bootstrap.js"></script>
+	<script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap/2.3.1/js/bootstrap.min.js"></script>
+<!-- 
+	<script type="text/javascript" src="https://ws.areyouahuman.com/ws/script/7571a9ef9a71b873292246c50fe4a7a1ab5fa851"></script>
+ -->
+
+	<!-- Select2 -->
+	<link type="text/css" rel="stylesheet" href="//cdn.jsdelivr.net/select2/3.3.1/select2.css" />
+	<script type="text/javascript" src="//cdn.jsdelivr.net/select2/3.3.1/select2.js"></script>
+	<script type="text/javascript" src="//cdn.jsdelivr.net/select2/3.3.1/select2.min.js"></script>
+
+	<!-- json-to-table -->
+	<script type="text/javascript" src="./afshinm-Json-to-HTML-Table-281c16c/json-to-table.js"></script>
+
+	<!-- local CSS -->
+	<link href="dionysus.css" rel="stylesheet">
+	<link rel='shortcut icon' href='./favicon_32.ico' />
+
+	<script>
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+	ga('create', 'UA-40674809-1', 'alcoholgenome.com');
+	ga('send', 'pageview');
+
+	</script>
+
+
+	<script>
+
+	function buildResultsTable (results) {
+
+
+		var table = '<table id="search_results" class="table">' +
+		'<thead>' + 
+		'<tr>' + 
+		'<th>Name</th>' +
+		'<th>Brewery</th>' +
+		'<th>Style</th>' +
+		'<th>Odds You\'ll Love It</th>' +
+		'<th></th>' +
+		'</tr>' + 
+		'</thead>' +
+		'<tbody>';
+
+		for (var r = 0; r < results.length; r++) {
+			table += '<tr>' + 
+			'<td>' + results[r]["Name"] + '</td>' + 
+			'<td>' + results[r]["Brewery"] + '</td>' +
+			'<td>' + results[r]["Style"] + '</td>' +
+			'<td>' + results[r]["Score"] + "/10" + '</td>' +
+						// '<td>' + results[r]["Explanation"] +
+						// '<a href="#" class="btn" data-placement="right" data-toggle="popover" title="A Title" data-content="Test">Why?</a>'+
+						// '<div class="popover fade right in" style="top: 12.5px; left: 247px; display: block;"><div class="arrow"></div><div class="popover-content">Test</div></div>' +
+
+						'</td>' +
+						'</tr>';
+					}
+
+
+					table += '</tbody></table>';
+
+					return table;
+				}
+
+	function createMailToLink (search_query, results) {
+		var mailto = "mailto: ?subject=Dionysus%20Beer%20Recommendations&body=";
+		var body = "When%20you%20searched%20the%20Alcohol%20Genome%20Project%20for:%0d%0d";
+		for (var s = 0; s < search_query.length; s++) {
+			body += search_query[s] + ", ";
+		}
+		body = body.substring(0, body.length-2);
+		body += "%0d%0d%0dThe Top Recommendations Were:%0d%0d";
+
+		for (var r = 0; r < results.length; r++) {
+			if (body.length >= 1000) {
+				break;
+			}
+
+			var name = results[r].Name;
+			name = name.substring(name.indexOf('>') + 1);
+			name = name.substring(0, name.indexOf('<'));
+			name = encodeURI(name);
+			var brewery = encodeURI(results[r].Brewery);
+			body += (r+1) + ".%20" + name + "%20-%20" + brewery;
+			body += "%0d";
+		}
+
+		body += "%0dFind%20the%20full%20results%20at%20http%3A%2F%2Falcoholgenome.com";
+		body = body.replace(/&amp;/g, '%26')
+		console.log(body);
+		mailto += body;
+		return mailto;
+	}
+
+
+				$(document).ready(function() {
+
+			// create empty search bar
+			// $("#search").prop("disabled", true);
+			$('#search').select2({
+				placeholder: 'Loading Beers... (we\'re loading up thousands of beers, give us a sec)',
+				width: '100%'
+			});
+
+
+			// get beer list from server and populate search bar field
+			$.get('/get_beer_list', function(response) {
+				var beer_list = response;
+				$.each(beer_list, function(index, value) {   
+					$('#search')
+					.append($("<option></option>")
+						.attr("value",value)
+						.text(value)); 
+				});
+				$('#search').select2({
+					placeholder: 'Type some of your favorite beers...',
+					width: "100%",
+					minimumInputLength: 3
+
+				});
+				// $("#search").prop("disabled", false);
+			});
+
+
+			// automatically send search bar selections to the server and display results
+			$("#search").change( function() {
+				var search_query = $("#search").val(),
+				// state = $('#state').val();
+				to_send = {
+					"search_items" : search_query,
+					// "state": state
+				};
+
+				$.post('/search', to_send, function (response) {
+					var new_results = response;
+					if (new_results.length == undefined) {
+						$("#results").removeClass("visible");
+						$("#results").addClass("invisible");
+						console.log("made results invisible");
+					} else {
+						results_table = buildResultsTable(response);
+						$('#search_results').html(results_table);
+						$("#results").removeClass("invisible");
+						$("#results").addClass("visible");
+						$("#email").attr("href", createMailToLink(search_query, new_results));
+						// $('#search_results_input').val(search_query);
+
+					}
+
+					
+
+				});
+			});
+
+			// $("#emailform").submit(function() {
+			// 	// $('#emailbutton').replaceWith('<form><div id="AYAH"></div><input type="submit"></form>');
+			// 	alert($("#emailform").val().session_secret);
+				
+			// });
+
+
+			
+
+		});
+
+</script>
+
+</head>
+<body>
+	<div class="navbar">
+		<div class="navbar-inner">
+			<!-- <div class="container vcentered"> -->
+			<a class="brand vcentered" href="#"><img src="./logo.png" alt="Dionysus - alcoholgenome.com" class="logo"></a>
+			<ul class="nav">
+				<li class="active"><a href="#">Beer</a></li>
+				<li><a href="wine.html">Wine</a></li>
+				<li><a href="whisky.html">Whisky</a></li>
+				<li class="divider-vertical"></li>
+				<li><a href="howitworks.html">How It Works</a></li>
+				<li><a href='mailto:dionysus@alcoholgenome.com?subject=[Dionysus Contact] '>Contact</a></li>
+			</ul>
+			<!-- </div> -->
+		</div>
+	</div>
+
+	<div class="page-header row-fluid">
+		<span class="span8 offset2">
+			<h2>Beer Recommendations!</h2> 
+			<!-- Search in and around:
+
+			<select id="state" size="1"> 
+				<option value="" >All States</option> 
+				<option value="AL">AL - Alabama</option> 
+				<option value="AK">AK - Alaska</option> 
+				<option value="AZ">AZ - Arizona</option> 
+				<option value="AR">AR - Arkansas</option> 
+				<option value="CA">CA - California</option> 
+				<option value="CO">CO - Colorado</option> 
+				<option value="CT">CT - Connecticut</option> 
+				<option value="DE">DE - Delaware</option> 
+				<option value="DC">DC - District Of Columbia</option> 
+				<option value="FL">FL - Florida</option> 
+				<option value="GA">GA - Georgia</option> 
+				<option value="HI">HI - Hawaii</option> 
+				<option value="ID">ID - Idaho</option> 
+				<option value="IL">IL - Illinois</option> 
+				<option value="IN">IN - Indiana</option> 
+				<option value="IA">IA - Iowa</option> 
+				<option value="KS">KS - Kansas</option> 
+				<option value="KY">KY - Kentucky</option> 
+				<option value="LA">LA - Louisiana</option> 
+				<option value="ME">ME - Maine</option> 
+				<option value="MD">MD - Maryland</option> 
+				<option value="MA">MA - Massachusetts</option> 
+				<option value="MI">MI - Michigan</option> 
+				<option value="MN">MN - Minnesota</option> 
+				<option value="MS">MS - Mississippi</option> 
+				<option value="MO">MO - Missouri</option> 
+				<option value="MT">MT - Montana</option> 
+				<option value="NE">NE - Nebraska</option> 
+				<option value="NV">NV - Nevada</option> 
+				<option value="NH">NH - New Hampshire</option> 
+				<option value="NJ">NJ - New Jersey</option> 
+				<option value="NM">NM - New Mexico</option> 
+				<option value="NY">NY - New York</option> 
+				<option value="NC">NC - North Carolina</option> 
+				<option value="ND">ND - North Dakota</option> 
+				<option value="OH">OH - Ohio</option> 
+				<option value="OK">OK - Oklahoma</option> 
+				<option value="OR">OR - Oregon</option> 
+				<option value="PA">PA - Pennsylvania</option> 
+				<option value="RI" selected="selected">RI - Rhode Island</option> 
+				<option value="SC">SC - South Carolina</option> 
+				<option value="SD">SD - South Dakota</option> 
+				<option value="TN">TN - Tennessee</option> 
+				<option value="TX">TX - Texas</option> 
+				<option value="UT">UT - Utah</option> 
+				<option value="VT">VT - Vermont</option> 
+				<option value="VA">VA - Virginia</option> 
+				<option value="WA">WA - Washington</option> 
+				<option value="WV">WV - West Virginia</option> 
+				<option value="WI">WI - Wisconsin</option> 
+				<option value="WY">WY - Wyoming</option>
+			</select> -->
+		</span>
+	</div>
+
+	<div class="row-fluid">
+		<span class="span8 offset2">
+			<div id="searchinstruct" class="lead"> Enter your favorite beers and we'll suggest others you'll love: </div>
+
+
+			
+
+			<select multiple id="search">
+			</select>
+
+		</span>
+	</div>
+
+	<br>
+
+	<div id="results" class="invisible">
+		<div class="row-fluid">
+
+			<span class="span8 offset2">
+			<span class="span4">
+				<span class="lead">
+					Our Suggestions: 
+				</span>
+			</span>
+
+		
+				<a id="email" href="" class="btn btn-primary btn-small pull-right"><i class="icon-envelope icon-white"></i> Email Top Results</a>
+<!-- 
+				<form id="emailform">
+				<div id="AYAH"></div>
+				<input type="hidden" id="search_results_input" value="">
+				<input id="emailbutton" class="btn btn-primary pull-right" type="submit" value="Email Results">
+				</form> -->
+
+		</span>
+
+		</div>
+
+		<br>
+		<div class="row-fluid">
+			<span class="span8 offset2">
+
+				<table id="search_results" class="table">
+					<thead>
+						<tr>
+							<th>Name</th>
+							<th>Brewery</th>
+							<th>Style</th>
+							<th>BeerAdvocate.com Rating</th>
+						</tr>
+					</thead>
+				</table>
+
+
+			</span>
+		</div>
+	</div>
+
+</body>
+</html>
