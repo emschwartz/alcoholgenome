@@ -143,8 +143,13 @@ function buildResultsTable (results) {
 							var row_num = parseInt($(this).attr('id').substring(4)) + 1,
 							beer_name = $(table.rows[row_num].cells[1]).text(),
 							brewery = $(table.rows[row_num].cells[2]).text();
-							var search_val = $("#search").select2("val");
-							search_val.push(beer_name + " - " + brewery);
+							var search_val = $("#search").select2("val"),beer_and_brewery = beer_name + " - " + brewery;
+							beer_and_brewery = beer_and_brewery.replace('&amp;', '&');
+
+							if (beer_and_brewery.charAt(beer_and_brewery.length) == '\s' || beer_and_brewery.charAt(beer_and_brewery.length) == '') {
+								beer_and_brewery = beer_and_brewery.substring(0,beer_and_brewery.length);
+							}
+							search_val.push(beer_and_brewery);
 							$("#search").select2("val", search_val);
 							performSearch();
 						});
@@ -174,7 +179,9 @@ $(document).ready(function() {
 			// get beer list from server and populate search bar field
 			$.get('/get_beer_list', function(response) {
 				var beer_list = response;
-				$.each(beer_list, function(index, value) {   
+				$.each(beer_list, function(index, value) { 
+					value = value.replace('&amp;', '&');
+
 					$('#search')
 					.append($("<option></option>")
 						.attr("value",value)
