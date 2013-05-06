@@ -66,6 +66,28 @@ function removeSearchedForAndLowRatedBeers (beers, searched_beer_names) {
 	return to_return;
 }
 
+// function addExplanations (qualities, beers) {
+// 	var scale_categories = ["light", "dark", "bitter", "sweet", "fruit"],
+// 	binary_categories = []
+
+// 	var modifiers_and_maxes = {
+// 		"a bit": 20,
+// 		"somewhat": 40
+// 		"moderately": 60,
+// 		"very": 90,
+// 		"extremely": 100
+// 	}
+// 	console.log(qualities);
+
+// 	for (var b = 0; b < beers.length; b++) {
+// 		var explanation = "We think you'll love this beer because it is ";
+
+// 		// console.log(beers[b])
+// 	}
+
+// 	return beers;
+// }
+
 function findSimilarBeersTo(db_client, beer_names, quality_averages, express_response) {
 	// console.log(quality_averages);
 	var qualities = [];
@@ -97,6 +119,8 @@ var query = db_client.query(query_string, function(err, result) {
 	var sorted_beers = sortBeerResults(quality_averages, result.rows);
 	sorted_beers = removeSearchedForAndLowRatedBeers(sorted_beers, beer_names);
 	sorted_beers = sorted_beers.slice(0, 50);
+	// qualities.sort(function(a, b){return b.average - a.average});
+	// sorted_beers = addExplanations(qualities, sorted_beers);
 	returnSimilarBeers(sorted_beers, express_response, db_client);
 	
 });
