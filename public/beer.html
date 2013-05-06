@@ -128,6 +128,10 @@ function buildResultsTable (results) {
 					// "state": state
 				};
 
+				if (("#search-examples").length > 0){
+				$("#search-examples").remove();
+			}
+
 				$.post('/search', to_send, function (response) {
 					var new_results = response;
 					if (new_results.length == undefined) {
@@ -222,7 +226,7 @@ $(document).ready(function() {
 					$(this).addClass("disabled");
 					$("#search").select2("val", $(this).text());
 							performSearch();
-							$("#search-examples").remove();
+							
 				});
 
 			});
