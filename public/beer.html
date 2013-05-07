@@ -18,11 +18,14 @@
 
 	<link type="text/css" rel="stylesheet" href="//cdn.jsdelivr.net/bootstrap/2.3.1/css/bootstrap.min.css" />
 	<link type="text/css" rel="stylesheet" href="//cdn.jsdelivr.net/bootstrap/2.3.1/css/bootstrap.css" />
+	<link type="text/css" rel="stylesheet" href="//cdn.jsdelivr.net/bootstrap/2.3.1/css/bootstrap-responsive.css" />
+<link type="text/css" rel="stylesheet" href="//cdn.jsdelivr.net/bootstrap/2.3.1/css/bootstrap-responsive.min.css" />
 	<script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap/2.3.1/js/bootstrap-tooltip.js"></script>
 	<script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap/2.3.1/js/bootstrap-popover.js"></script>
 
 	<script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap/2.3.1/js/bootstrap.js"></script>
 	<script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap/2.3.1/js/bootstrap.min.js"></script>
+
 <!-- 
 	<script type="text/javascript" src="https://ws.areyouahuman.com/ws/script/7571a9ef9a71b873292246c50fe4a7a1ab5fa851"></script>
 -->
@@ -59,7 +62,6 @@ function buildResultsTable (results) {
 	var table = '<table id="search_results" class="table">' +
 	'<thead>' + 
 	'<tr>' + 
-	'<th></th>' +
 	'<th>Name</th>' +
 	'<th>Brewery</th>' +
 	'<th>Style</th>' +
@@ -71,16 +73,18 @@ function buildResultsTable (results) {
 
 	for (var r = 0; r < results.length; r++) {
 		table += '<tr>' + 
-		'<td> <button id="like' + r + '" class="btn btn-mini like-rec-btn"><i class="icon-thumbs-up"></i></button> </td>' + 
+		
 		'<td>' + results[r]["Name"] + '</td>' + 
 		'<td>' + results[r]["Brewery"] + '</td>' +
 		'<td>' + results[r]["Style"] + '</td>' +
 		'<td>' + results[r]["Score"] + "/10" + '</td>' +
+		'<td> <button id="like' + r + '" class="btn btn-mini btn-info like-rec-btn"><i class="icon-thumbs-up icon-white"></i></button> </td>' + 
+		'<td> <button class="btn btn-primary btn-mini purchase"><i class="icon-shopping-cart icon-white"></i></button> <td>' +
 						// '<td>' + results[r]["Explanation"] +
 						// '<a href="#" class="btn" data-placement="right" data-toggle="popover" title="A Title" data-content="Test">Why?</a>'+
 						// '<div class="popover fade right in" style="top: 12.5px; left: 247px; display: block;"><div class="arrow"></div><div class="popover-content">Test</div></div>' +
 
-						'</td>' +
+						// '</td>' +
 						'</tr>';
 					}
 
@@ -105,8 +109,8 @@ function buildResultsTable (results) {
 						}
 
 						var name = results[r].Name;
-						name = name.substring(name.indexOf('>') + 1);
-						name = name.substring(0, name.indexOf('<'));
+						name = name.substring(name.indexOf('<b>') + 3);
+						name = name.substring(0, name.indexOf('</b>'));
 						name = encodeURI(name);
 						var brewery = encodeURI(results[r].Brewery);
 						body += (r+1) + ".%20" + name + "%20-%20" + brewery;
@@ -145,8 +149,8 @@ function buildResultsTable (results) {
 							$(this).addClass('btn-success disabled');
 							var table = $("#search_results")[0];
 							var row_num = parseInt($(this).attr('id').substring(4)) + 1,
-							beer_name = $(table.rows[row_num].cells[1]).text(),
-							brewery = $(table.rows[row_num].cells[2]).text();
+							beer_name = $(table.rows[row_num].cells[0]).text(),
+							brewery = $(table.rows[row_num].cells[1]).text();
 							var search_val = $("#search").select2("val"),beer_and_brewery = beer_name + " - " + brewery;
 							beer_and_brewery = beer_and_brewery.replace('&amp;', '&');
 
@@ -158,6 +162,9 @@ function buildResultsTable (results) {
 							performSearch();
 						});
 
+						$(".purchase").click(function (){
+							alert("We're sorry, this feature is under development.\n\nNevertheless, we've noted that you might be interested in being able to purchase recommended drinks from Dionysus or find where you can purchase them in your local area. We'll try to get this working as soon as we can!\n\n- The Alcohol Genome Project");
+						});
 						$("#results").removeClass("invisible");
 						$("#results").addClass("visible");
 						$("#email").attr("href", createMailToLink(search_query, new_results));
@@ -300,7 +307,7 @@ $(document).ready(function() {
 				</span>
 
 
-				<a id="email" href="" class="btn btn-primary btn-small pull-right"><i class="icon-envelope icon-white"></i> Email Top Results</a>
+				<a id="email" href="" class="btn  btn-small pull-right"><i class="icon-envelope"></i> Email Top Results</a>
 <!-- 
 				<form id="emailform">
 				<div id="AYAH"></div>

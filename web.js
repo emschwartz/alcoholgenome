@@ -13,7 +13,7 @@ function returnSimilarBeers(rows, express_response, db_client) {
 	var to_send = []
 	for (var r = 0; r < rows.length; r++ ) {
 		var row = rows[r];
-		var name_link = "<a href='" + row["link"] + "'>" + row["name"] + '</a>';
+		var name_link = "<a href='" + row["link"] + "'><b>" + row["name"] + '</b></a>';
 		to_send.push({
 			"Name" : name_link
 			, "Brewery" : row["brewery"]
