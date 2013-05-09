@@ -102,6 +102,10 @@ function queryForSimilarBeerSearch (beers_avg) {
 
 	var query_string = "select distinct * from alcoholgenome where (";
 		query_string += "(numreviews >= 100) and (rating >= 75) and ";
+	for (var b = 0; b < beers_avg.beer_exclude_list.length; b++) {
+		var excl = beers_avg.beer_exclude_list[b];
+		query_string += "(not (name=" + excl.name + " and brewery=" + excl.brewery + ")) and ";
+	}
 	var query_values = [];
 	for (var c = 0; c < beers_avg.scaled_order.length; c++) {
 		var cat = beers_avg.scaled_order[c],
@@ -188,7 +192,7 @@ function addExplanationsToBeers (similar_beers, beers_avg) {
 		}
 		explanation += ".";
 		similar_beers[b].explanation = explanation;
-		console.log(similar_beers[b]);
+		// console.log(similar_beers[b]);
 	}
 	console.log(beers_avg);
 

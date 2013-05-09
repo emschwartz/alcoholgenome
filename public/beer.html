@@ -77,10 +77,10 @@ function buildResultsTable (results) {
 		'<td>' + results[r].name + '</td>' + 
 		'<td>' + results[r].brewery + '</td>' +
 		'<td>' + results[r].style + '</td>' +
-		'<td>' + results[r].score + "/10" + '</td>' +
+		'<td>' + results[r].score + "/10" + '  <button id="explanation-btn' + r + '" class="btn btn-mini btn-link btn-mini explanation-btn" style="vertical-align:middle">Why?</button>' + '</td>' +
 		'<td style="display:none"> ' + results[r].explanation + '</td>' +
-		'<td> <button id="explanation-btn' + r + '" class="btn btn-mini btn-info btn-mini explanation-btn"><i class="icon-info-sign icon-white"></i></button> </td>' + 
-		'<td> <button id="like' + r + '" class="btn btn-mini btn-success like-rec-btn"><i class="icon-thumbs-up icon-white"></i></button> </td>' + 
+		// '<td> <button id="explanation-btn' + r + '" class="btn btn-mini btn-info btn-mini explanation-btn"><i class="icon-info-sign icon-white"></i></button> </td>' + 
+		'<td> <button id="like' + r + '" class="btn btn-mini btn-info like-rec-btn"><i class="icon-thumbs-up icon-white"></i></button> </td>' + 
 		'<td> <button class="btn btn-primary btn-mini purchase"><i class="icon-shopping-cart icon-white"></i></button> </td>' +
 						'</tr>';
 					}
