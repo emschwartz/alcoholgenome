@@ -171,12 +171,12 @@ function addExplanationsToBeers (similar_beers, beers_avg) {
 		if (similar_beers[b].score < 9) {
 			love_or_like = "like";
 		}
-		var explanation = "We think you'll " + love_or_like + " this beer because it is ";
+		var explanation = "<div>We think you'll " + love_or_like + " this beer because it is ";
 		for (var c = 0; c < binary_categories.length; c++) {
 			var cat = binary_categories[c];
 			if (similar_beers[b][cat] == 1) {
 				cat = cat.substring(0, cat.length-7);
-				explanation += cat + ", ";
+				explanation += '<b>' + cat + "</b>, ";
 			}
 		}
 		for (var c = 0; c < beers_avg.scaled_order.length; c++) {
@@ -189,21 +189,23 @@ function addExplanationsToBeers (similar_beers, beers_avg) {
 				cat = "malty";
 			}
 			if (cat_score == 100) {
-				explanation += "extremely " + cat + ", ";
+				explanation += "extremely ";
 			} else if (cat_score >= 85) {
-				explanation += "very " + cat + ", ";
+				explanation += "very ";
 			} else if (cat_score >= 60) {
-				explanation += cat + ", ";
+				explanation += "";
 			} else if (cat_score >= 40) {
-				explanation += "moderately " + cat + ", ";
+				explanation += "moderately ";
 			} else if (cat_score >= 20) {
-				explanation += "a little " + cat + ", ";
+				explanation += "a little ";
 			} else if (cat_score >= 10) {
-				explanation += "a bit " + cat + ", ";
+				explanation += "a bit ";
 			} else if (cat_score >= 0) {
-				explanation += "just a tad " + cat + ", ";
+				explanation += "just a tad ";
 			}
-
+			if (cat_score >= 0) {
+				explanation += '<b>' + cat + "</b>, ";
+			}
 			
 		}
 		explanation = explanation.substring(0, explanation.length - 2);
@@ -213,9 +215,10 @@ function addExplanationsToBeers (similar_beers, beers_avg) {
 		} else {
 			explanation = explanation.substring(0, last_comma + 1) + " and" + explanation.substring(last_comma + 1);
 		}
-		explanation += ".";
+		explanation += ".</div>";
 		similar_beers[b].explanation = explanation;
 		// console.log(similar_beers[b]);
+		// console.log(explanation);
 	}
 	// console.log(beers_avg);
 

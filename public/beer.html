@@ -157,9 +157,10 @@ function buildResultsTable (results) {
 						});
 
 						$('.explanation-btn').popover({
+							"html": true,
 							"content": (function() {
-								var row_num = parseInt($(this).parent().parent().children().index($(this).parent()) + 1);
-								var explanation = $(table.rows[row_num].cells[4]).text();
+								var row_num = parseInt($(this).parent().parent().parent().children().index($(this).parent().parent())) + 1;
+								var explanation = $(table.rows[row_num].cells[4]).html();
 								return explanation;
 							}),
 							"trigger": "hover",
