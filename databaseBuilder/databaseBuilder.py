@@ -16,13 +16,11 @@ def prepareDBHeaderRow (beer):
 		if col != 'Review Text':
 			headers.append(col)
 
-	for col in getBeerWordCategories():
-		headers.append(col.title())
+	for cat_type in getBeerWordCategories().keys():
+		for col in getBeerWordCategories()[cat_type]:
+			headers.append(col)
 
 	headers.append("Total Count")
-
-	# for col in getBeerWordCategories():
-	# 	headers.append(col.title() + " Percent")
 
 	return headers
 
@@ -37,18 +35,14 @@ def prepareDBRow (beer):
 	total_beer_words = 0
 	beer_word_counts = countBeerWordsInText(beer["Review Text"])
 
-	for category in getBeerWordCategories():
-		words_in_category = beer_word_counts[str(category)]
-		row.append(words_in_category)
-		total_beer_words += words_in_category
+	for cat_type in ["scaled", "binary"]:
+		categories = getBeerWordCategories()[cat_type]
+		for category in categories.keys():
+			words_in_category = beer_word_counts[cat_type][category]
+			row.append(words_in_category)
+			total_beer_words += words_in_category
 
 	row.append(total_beer_words)
-
-	# for category in getBeerWordCategories():
-	# 	words_in_category = beer_word_counts[str(category)]
-	# 	category_percent = float(words_in_category) / total_beer_words
-	# 	row.append(category_percent)
-
 	return row
 
 

@@ -74,17 +74,14 @@ function buildResultsTable (results) {
 	for (var r = 0; r < results.length; r++) {
 		table += '<tr>' + 
 		
-		'<td>' + results[r]["Name"] + '</td>' + 
-		'<td>' + results[r]["Brewery"] + '</td>' +
-		'<td>' + results[r]["Style"] + '</td>' +
-		'<td>' + results[r]["Score"] + "/10" + '</td>' +
-		'<td> <button id="like' + r + '" class="btn btn-mini btn-info like-rec-btn"><i class="icon-thumbs-up icon-white"></i></button> </td>' + 
-		'<td> <button class="btn btn-primary btn-mini purchase"><i class="icon-shopping-cart icon-white"></i></button> <td>' +
-						// '<td>' + results[r]["Explanation"] +
-						// '<a href="#" class="btn" data-placement="right" data-toggle="popover" title="A Title" data-content="Test">Why?</a>'+
-						// '<div class="popover fade right in" style="top: 12.5px; left: 247px; display: block;"><div class="arrow"></div><div class="popover-content">Test</div></div>' +
-
-						// '</td>' +
+		'<td>' + results[r].name + '</td>' + 
+		'<td>' + results[r].brewery + '</td>' +
+		'<td>' + results[r].style + '</td>' +
+		'<td>' + results[r].score + "/10" + '</td>' +
+		'<td style="display:none"> ' + results[r].explanation + '</td>' +
+		'<td> <button id="explanation-btn' + r + '" class="btn btn-mini btn-info btn-mini explanation-btn"><i class="icon-info-sign icon-white"></i></button> </td>' + 
+		'<td> <button id="like' + r + '" class="btn btn-mini btn-success like-rec-btn"><i class="icon-thumbs-up icon-white"></i></button> </td>' + 
+		'<td> <button class="btn btn-primary btn-mini purchase"><i class="icon-shopping-cart icon-white"></i></button> </td>' +
 						'</tr>';
 					}
 
@@ -108,11 +105,11 @@ function buildResultsTable (results) {
 							break;
 						}
 
-						var name = results[r].Name;
+						var name = results[r].name;
 						name = name.substring(name.indexOf('<b>') + 3);
 						name = name.substring(0, name.indexOf('</b>'));
 						name = encodeURI(name);
-						var brewery = encodeURI(results[r].Brewery);
+						var brewery = encodeURI(results[r].brewery);
 						body += (r+1) + ".%20" + name + "%20-%20" + brewery;
 						body += "%0d";
 					}
@@ -144,10 +141,28 @@ function buildResultsTable (results) {
 					} else {
 						results_table = buildResultsTable(response);
 						$('#search_results').html(results_table);
+
+						// $.each($('.explanation-btn'), function (index, value) {
+						// 	var table = $("#search_results")[0];
+						// 	$(value).popover({
+						// 		"content": $(table.rows[index].cells[4]).text(),
+						// 	"trigger": "hover"
+						// 	});
+						// });
+						var table = $("#search_results")[0];
+						
+						$('.explanation-btn').popover({
+							"content": (function() {
+								var row_num = parseInt($(this).attr('id').substring(15)) + 1;
+								var explanation = $(table.rows[row_num].cells[4]).text();
+								return explanation;
+							}),
+							"trigger": "hover"
+						});
+
 						
 						$('.like-rec-btn').click(function () {
 							$(this).addClass('btn-success disabled');
-							var table = $("#search_results")[0];
 							var row_num = parseInt($(this).attr('id').substring(4)) + 1,
 							beer_name = $(table.rows[row_num].cells[0]).text(),
 							brewery = $(table.rows[row_num].cells[1]).text();
@@ -308,12 +323,6 @@ $(document).ready(function() {
 
 
 				<a id="email" href="" class="btn  btn-small pull-right"><i class="icon-envelope"></i> Email Top Results</a>
-<!-- 
-				<form id="emailform">
-				<div id="AYAH"></div>
-				<input type="hidden" id="search_results_input" value="">
-				<input id="emailbutton" class="btn btn-primary pull-right" type="submit" value="Email Results">
-			</form> -->
 
 		</span>
 
