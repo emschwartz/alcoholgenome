@@ -194,7 +194,7 @@ function addExplanationsToBeers (similar_beers, beers_avg) {
 		similar_beers[b].explanation = explanation;
 		// console.log(similar_beers[b]);
 	}
-	console.log(beers_avg);
+	// console.log(beers_avg);
 
 	return similar_beers;
 }
