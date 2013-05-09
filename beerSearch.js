@@ -11,12 +11,15 @@ function search (search_beer_names, db_client, express_response) {
 			beers_avg = averageBeerQualities(searched_beers),
 			second_query_string = queryForSimilarBeerSearch(beers_avg);
 		db_client.query(second_query_string, function(err, result) {
-
+			if (result == undefined) {
+				express_response.send({});
+			} else {
 			var similar_beers = scoreAndSortBeers(result.rows, beers_avg);
 			similar_beers = similar_beers.slice(0, 30);
 			similar_beers = addExplanationsToBeers(similar_beers, beers_avg);
 
 			express_response.send(similar_beers);
+		}	
 		});
 	});
 }
@@ -104,7 +107,7 @@ function queryForSimilarBeerSearch (beers_avg) {
 		query_string += "(numreviews >= 100) and (rating >= 75) and ";
 	for (var b = 0; b < beers_avg.beer_exclude_list.length; b++) {
 		var excl = beers_avg.beer_exclude_list[b];
-		query_string += "(not (name=" + excl.name + " and brewery=" + excl.brewery + ")) and ";
+		query_string += "(not (name='" + excl.name.replace("'", "\'") + "' and brewery='" + excl.brewery.replace("'", "\'") + "')) and ";
 	}
 	var query_values = [];
 	for (var c = 0; c < beers_avg.scaled_order.length; c++) {
