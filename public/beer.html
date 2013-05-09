@@ -106,8 +106,8 @@ function buildResultsTable (results) {
 						}
 
 						var name = results[r].name;
-						name = name.substring(name.indexOf('<b>') + 3);
-						name = name.substring(0, name.indexOf('</b>'));
+						// name = name.substring(name.indexOf('<b>') + 3);
+						// name = name.substring(0, name.indexOf('</b>'));
 						name = encodeURI(name);
 						var brewery = encodeURI(results[r].brewery);
 						body += (r+1) + ".%20" + name + "%20-%20" + brewery;
