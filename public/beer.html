@@ -74,10 +74,10 @@ function buildResultsTable (results) {
 	for (var r = 0; r < results.length; r++) {
 		table += '<tr>' + 
 		
-		'<td><span class="explanation-btn">' + results[r].name + '</span></td>' + 
-		'<td><span class="explanation-btn">' + results[r].brewery + '</span></td>' +
-		'<td><span class="explanation-btn">' + results[r].style + '</span></td>' +
-		'<td><span class="explanation-btn">' + results[r].score + "/10" + '</span></td>' +
+		'<td><div class="explanation-btn">' + results[r].name + '</div></td>' + 
+		'<td><div class="explanation-btn">' + results[r].brewery + '</div></td>' +
+		'<td><div class="explanation-btn">' + results[r].style + '</div></td>' +
+		'<td><div class="explanation-btn">' + results[r].score + "/10" + '</div></td>' +
 		'<td style="display:none"> ' + results[r].explanation + '</td>' +
 		// '<td> <button id="explanation-btn' + r + '" class="btn btn-mini btn-info btn-mini explanation-btn"><i class="icon-info-sign icon-white"></i></button> </td>' + 
 		'<td> <button id="like' + r + '" class="btn btn-mini btn-info like-rec-btn"><i class="icon-thumbs-up icon-white"></i></button> </td>' + 
