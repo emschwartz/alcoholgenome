@@ -62,7 +62,7 @@ function buildResultsTable (results) {
 	var table = '<table id="search_results" class="table table-hover">' +
 	'<thead>' + 
 	'<tr>' + 
-	'<th>Name</th>' +
+	'<th>Recommended <span style="white-space: nowrap">Beer <i id="sugg-tip" class="icon-info-sign"></i></span></th>' +
 	'<th>Brewery</th>' +
 	'<th>Style</th>' +
 	'<th>Odds You\'ll Love It</th>' +
@@ -75,9 +75,9 @@ function buildResultsTable (results) {
 		table += '<tr>' + 
 		
 		'<td><div class="explanation-btn">' + results[r].name + '</div></td>' + 
-		'<td><div class="explanation-btn">' + results[r].brewery + '</div></td>' +
-		'<td><div class="explanation-btn">' + results[r].style + '</div></td>' +
-		'<td><div class="explanation-btn">' + results[r].score + "/10" + '</div></td>' +
+		'<td><div>' + results[r].brewery + '</div></td>' +
+		'<td><div>' + results[r].style + '</div></td>' +
+		'<td><div class="explanation-btn">' + results[r].score + "/10" + '<button class="btn btn-link btn-mini">Why?</button>'+ '</div></td>' +
 		'<td style="display:none"> ' + results[r].explanation + '</td>' +
 		// '<td> <button id="explanation-btn' + r + '" class="btn btn-mini btn-info btn-mini explanation-btn"><i class="icon-info-sign icon-white"></i></button> </td>' + 
 		'<td> <button id="like' + r + '" class="btn btn-mini btn-info like-rec-btn"><i class="icon-thumbs-up icon-white"></i></button> </td>' + 
@@ -151,7 +151,8 @@ function buildResultsTable (results) {
 						// });
 						var table = $("#search_results")[0];
 						$('#sugg-tip').popover({
-							"content": "Every one of our suggestions is recommended specifically because of the flavor profile of the beers you search for. Hover over the suggestions for explanations of why each was chosen for you!",
+							"html": true,
+							"content": '<div style="font-weight: normal;">Every one of our suggestions is recommended specifically because of the flavor profile of the beers you search for. Hover over the suggestions for explanations of why each was chosen for you!</div>',
 							"trigger": "hover",
 							"placement": "right"
 						});
@@ -167,7 +168,10 @@ function buildResultsTable (results) {
 							"placement": "top"
 						});
 
-						
+						$('.like-rec-btn').popover({
+							"content": "Like this beer? Let us know so we can continue to improve our recommendations!",
+							"trigger": "hover"
+						});
 						$('.like-rec-btn').click(function () {
 							$(this).addClass('btn-success disabled');
 							var row_num = parseInt($(this).attr('id').substring(4)) + 1,
@@ -306,7 +310,7 @@ $(document).ready(function() {
 
 	<div class="row-fluid">
 		<span class="span8 offset2">
-			<div id="searchinstruct" class="lead"> Enter your favorite beers and we'll suggest others you'll love: </div>
+			<div id="searchinstruct" class="lead"> Enter your favorite beer(s) and we'll suggest others you'll love: </div>
 
 			<select multiple id="search">
 			</select>
@@ -318,7 +322,7 @@ $(document).ready(function() {
 	<br>
 
 	<div id="results" class="invisible">
-		<div class="row-fluid">
+		<!-- <div class="row-fluid">
 
 			<span class="span8 offset2">
 				<span class="span3" id="sugg-tip">
@@ -333,7 +337,7 @@ $(document).ready(function() {
 
 		</span>
 
-	</div>
+	</div> -->
 
 	<div class="row-fluid">
 		<span class="span8 offset2">
