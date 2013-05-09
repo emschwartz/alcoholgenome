@@ -109,8 +109,8 @@ function queryForSimilarBeerSearch (beers_avg) {
 			cat_range = 20 + 10 * Math.pow(1.5, c - 1);
 		query_string += "(" + cat + " between " + Math.min((cat_avg + cat_range), (cat_avg - cat_range)) + " and " + Math.max((cat_avg + cat_range), (cat_avg - cat_range)) + ") and ";
 	}
-	for (var c = 0; c < beers_avg.binary_avgs.length; c++) {
-		var cat = beers_avg.binary_order[c],
+	for (var c = 0; c < binary_categories.length; c++) {
+		var cat = binary_categories[c],
 			cat_avg = beers_avg.binary_avgs[cat],
 			cat_range = .6;
 		query_string += "(" + cat + " between " + Math.min((cat_avg + cat_range), (cat_avg - cat_range)) + " and " + Math.max((cat_avg + cat_range), (cat_avg - cat_range)) + ") and ";
@@ -153,7 +153,7 @@ function scoreAndSortBeers (similar_beers, search_avg) {
 
 function addExplanationsToBeers (similar_beers, beers_avg) {
 	for (var b = 0; b < similar_beers.length; b++) {
-		var explanation = "We think you'll love this beer because it is ";
+		var explanation = "Based on your search, we think you'll love this beer because it is ";
 		for (var c = 0; c < binary_categories.length; c++) {
 			var cat = binary_categories[c];
 			if (similar_beers[b][cat] == 1) {
@@ -188,7 +188,9 @@ function addExplanationsToBeers (similar_beers, beers_avg) {
 		}
 		explanation += ".";
 		similar_beers[b].explanation = explanation;
+		console.log(similar_beers[b]);
 	}
+	console.log(beers_avg);
 
 	return similar_beers;
 }
