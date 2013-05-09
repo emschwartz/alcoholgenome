@@ -150,7 +150,12 @@ function buildResultsTable (results) {
 						// 	});
 						// });
 						var table = $("#search_results")[0];
-						
+						$('#sugg-tip').popover({
+							"content": "Every one of our suggestions is recommended specifically because of the flavor profile of the beers you search for. Hover over the suggestions for explanations of why each was chosen for you!",
+							"trigger": "hover",
+							"placement": "right"
+						});
+
 						$('.explanation-btn').popover({
 							"content": (function() {
 								var row_num = parseInt($(this).parent().parent().children().index($(this).parent()) + 1);
@@ -315,9 +320,9 @@ $(document).ready(function() {
 		<div class="row-fluid">
 
 			<span class="span8 offset2">
-				<span class="span4">
+				<span class="span3" id="sugg-tip">
 					<span class="lead">
-						Our Suggestions: 
+						Our Suggestions <i class="icon-info-sign"></i>
 					</span>
 				</span>
 
@@ -328,8 +333,6 @@ $(document).ready(function() {
 		</span>
 
 	</div>
-		<br>
-
 
 	<div class="row-fluid">
 		<span class="span8 offset2">
