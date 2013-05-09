@@ -69,7 +69,7 @@ function averageBeerQualities (searched_beers) {
 	}
 
 	for (var b = 0; b < searched_beers.length; b++) {
-		avg.beer_exclude_list.push({"name" : searched_beers[b].name, "brewery" : searched_beers[b].brewery});
+		avg.beer_exclude_list.push((searched_beers[b].name + " - " + searched_beers[b].brewery));
 
 		for (var c = 0; c < scaled_categories.length; c++) {
 			var cat = scaled_categories[c];
@@ -153,10 +153,14 @@ function scoreAndSortBeers (similar_beers, search_avg) {
 	}
 
 	similar_beers.sort(function(a, b){return b.score - a.score});
-	similar_beers.filter(function(b){
+	similar_beers = similar_beers.filter(function(b){
 		if (b.score < 5) {
 			return false;
 		}
+		if (search_avg.beer_exclude_list.indexOf(b.name + " - " + b.brewery) != -1) {
+			return false;
+		}
+		return true;
 	});
 	return similar_beers;
 }
@@ -179,6 +183,11 @@ function addExplanationsToBeers (similar_beers, beers_avg) {
 			var cat = beers_avg.scaled_order[c],
 			cat_score = similar_beers[b][cat];
 			cat = cat.substring(0, cat.length-7);
+			if (cat == "bitter") {
+				cat = "hoppy";
+			} else if (cat == "sweet") {
+				cat = "malty";
+			}
 			if (cat_score == 100) {
 				explanation += "extremely " + cat + ", ";
 			} else if (cat_score >= 85) {
