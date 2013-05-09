@@ -164,7 +164,7 @@ function addExplanationsToBeers (similar_beers, beers_avg) {
 		if (similar_beers[b].score < 9) {
 			love_or_like = "like";
 		}
-		var explanation = "Based on your search we think you'll " + love_or_like + " this beer because it is ";
+		var explanation = "We think you'll " + love_or_like + " this beer because it is ";
 		for (var c = 0; c < binary_categories.length; c++) {
 			var cat = binary_categories[c];
 			if (similar_beers[b][cat] == 1) {
@@ -197,7 +197,7 @@ function addExplanationsToBeers (similar_beers, beers_avg) {
 		explanation = explanation.substring(0, explanation.length - 2);
 		var last_comma = explanation.lastIndexOf(',');
 		if (explanation.indexOf(',') == last_comma) {
-			explanation = explanation.substring(0, last_comma - 1) + " and" + explanation.substring(last_comma + 1);
+			explanation = explanation.substring(0, last_comma) + " and" + explanation.substring(last_comma + 1);
 		} else {
 			explanation = explanation.substring(0, last_comma + 1) + " and" + explanation.substring(last_comma + 1);
 		}

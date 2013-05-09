@@ -59,7 +59,7 @@ ga('send', 'pageview');
 function buildResultsTable (results) {
 
 
-	var table = '<table id="search_results" class="table">' +
+	var table = '<table id="search_results" class="table table-hover">' +
 	'<thead>' + 
 	'<tr>' + 
 	'<th>Name</th>' +
@@ -74,10 +74,10 @@ function buildResultsTable (results) {
 	for (var r = 0; r < results.length; r++) {
 		table += '<tr>' + 
 		
-		'<td>' + results[r].name + '</td>' + 
-		'<td>' + results[r].brewery + '</td>' +
-		'<td>' + results[r].style + '</td>' +
-		'<td>' + results[r].score + "/10" + '  <button id="explanation-btn' + r + '" class="btn btn-mini btn-link btn-mini explanation-btn" style="vertical-align:middle">Why?</button>' + '</td>' +
+		'<td><span class="explanation-btn">' + results[r].name + '</span></td>' + 
+		'<td><span class="explanation-btn">' + results[r].brewery + '</span></td>' +
+		'<td><span class="explanation-btn">' + results[r].style + '</span></td>' +
+		'<td><span class="explanation-btn">' + results[r].score + "/10" + '</span></td>' +
 		'<td style="display:none"> ' + results[r].explanation + '</td>' +
 		// '<td> <button id="explanation-btn' + r + '" class="btn btn-mini btn-info btn-mini explanation-btn"><i class="icon-info-sign icon-white"></i></button> </td>' + 
 		'<td> <button id="like' + r + '" class="btn btn-mini btn-info like-rec-btn"><i class="icon-thumbs-up icon-white"></i></button> </td>' + 
@@ -153,11 +153,12 @@ function buildResultsTable (results) {
 						
 						$('.explanation-btn').popover({
 							"content": (function() {
-								var row_num = parseInt($(this).attr('id').substring(15)) + 1;
+								var row_num = parseInt($(this).parent().parent().children().index($(this).parent()) + 1);
 								var explanation = $(table.rows[row_num].cells[4]).text();
 								return explanation;
 							}),
-							"trigger": "hover"
+							"trigger": "hover",
+							"placement": "top"
 						});
 
 						
@@ -308,7 +309,6 @@ $(document).ready(function() {
 
 		</span>
 	</div>
-
 	<br>
 
 	<div id="results" class="invisible">
@@ -324,23 +324,17 @@ $(document).ready(function() {
 
 				<a id="email" href="" class="btn  btn-small pull-right"><i class="icon-envelope"></i> Email Top Results</a>
 
+
 		</span>
 
 	</div>
+		<br>
 
-	<br>
+
 	<div class="row-fluid">
 		<span class="span8 offset2">
 
 			<table id="search_results" class="table">
-				<thead>
-					<tr>
-						<th>Name</th>
-						<th>Brewery</th>
-						<th>Style</th>
-						<th>BeerAdvocate.com Rating</th>
-					</tr>
-				</thead>
 			</table>
 
 

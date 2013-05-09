@@ -34,4 +34,11 @@ img.logo {
 	max-width: 80%;
 }
 
+tr:hover {
+	background-color: #F5EFEB
+}
+
+thead tr:hover {
+	background-color: #FFFFFF
+}
 
