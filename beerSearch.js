@@ -105,10 +105,10 @@ function queryForSimilarBeerSearch (beers_avg) {
 
 	var query_string = "select distinct * from alcoholgenome where (";
 		query_string += "(numreviews >= 100) and (rating >= 75) and ";
-	for (var b = 0; b < beers_avg.beer_exclude_list.length; b++) {
-		var excl = beers_avg.beer_exclude_list[b];
-		query_string += "(not (name='" + excl.name.replace("'", "\'") + "' and brewery='" + excl.brewery.replace("'", "\'") + "')) and ";
-	}
+	// for (var b = 0; b < beers_avg.beer_exclude_list.length; b++) {
+	// 	var excl = beers_avg.beer_exclude_list[b];
+	// 	query_string += "(not (name='" + excl.name.replace("'", "\'") + "' and brewery='" + excl.brewery.replace("'", "\'") + "')) and ";
+	// }
 	var query_values = [];
 	for (var c = 0; c < beers_avg.scaled_order.length; c++) {
 		var cat = beers_avg.scaled_order[c],
@@ -160,7 +160,11 @@ function scoreAndSortBeers (similar_beers, search_avg) {
 
 function addExplanationsToBeers (similar_beers, beers_avg) {
 	for (var b = 0; b < similar_beers.length; b++) {
-		var explanation = "Based on your search, we think you'll love this beer because it is ";
+		var love_or_like = "love";
+		if (similar_beers[b].score < 9) {
+			love_or_like = "like";
+		}
+		var explanation = "Based on your search we think you'll " + love_or_like + " this beer because it is ";
 		for (var c = 0; c < binary_categories.length; c++) {
 			var cat = binary_categories[c];
 			if (similar_beers[b][cat] == 1) {
@@ -172,7 +176,9 @@ function addExplanationsToBeers (similar_beers, beers_avg) {
 			var cat = beers_avg.scaled_order[c],
 			cat_score = similar_beers[b][cat];
 			cat = cat.substring(0, cat.length-7);
-			if (cat_score >= 85) {
+			if (cat_score == 100) {
+				explanation += "extremely " + cat + ", ";
+			} else if (cat_score >= 85) {
 				explanation += "very " + cat + ", ";
 			} else if (cat_score >= 60) {
 				explanation += cat + ", ";
@@ -180,6 +186,8 @@ function addExplanationsToBeers (similar_beers, beers_avg) {
 				explanation += "moderately " + cat + ", ";
 			} else if (cat_score >= 20) {
 				explanation += "a little " + cat + ", ";
+			} else if (cat_score >= 10) {
+				explanation += "a bit " + cat + ", ";
 			} else if (cat_score >= 0) {
 				explanation += "just a tad " + cat + ", ";
 			}
