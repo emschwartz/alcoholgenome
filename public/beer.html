@@ -120,6 +120,46 @@ function buildResultsTable (results) {
 					return mailto;
 				}
 
+				function createSearchExampleButtons () {
+					var sponsored_beers = [
+				'Samuel Adams Boston Lager - Boston Beer Company (Samuel Adams)',
+				'Sierra Nevada Pale Ale - Sierra Nevada Brewing Co.',
+				'Rampant Imperial IPA - New Belgium Brewing',
+				'Obsidian Stout - Deschutes Brewery',
+				'A Little Sumpin\' Sumpin\' Ale - Lagunitas Brewing Company'
+				];
+				function shuffle (o) {
+				for(var j, x, i = o.length; i; j = parseInt(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
+					return o;
+			}
+			sponsored_beers = shuffle(sponsored_beers);
+
+
+				var examples_html = '<br>For example: ';
+				for (var ex = 0; ex < 2; ex++) {
+					// var ex_name = beer_list[Math.floor(Math.random() * beer_list.length)];
+					var ex_name = sponsored_beers[ex];
+
+					examples_html += '<button class="btn btn-small search-example">' + ex_name + '</button>   ';
+					
+				}
+				$("#search-examples").html(examples_html);
+				
+				$(".search-example").click(function () {
+					$(this).addClass("disabled");
+					$("#search").select2("val", $(this).text());
+							performSearch();
+							
+				});
+				}
+
+				function hideResults () {
+					$("#results").removeClass("visible");
+						$("#results").addClass("invisible");
+						$("#email").remove();
+						createSearchExampleButtons();
+				}
+
 
 				function performSearch () {
 					var search_query = $("#search").val(),
@@ -129,15 +169,15 @@ function buildResultsTable (results) {
 					// "state": state
 				};
 
-				if (("#search-examples").length > 0){
-				$("#search-examples").remove();
-			}
+				if (search_query != '') {
+				$("#search-examples").html('');
+				
+				}
 
 				$.post('/search', to_send, function (response) {
 					var new_results = response;
 					if (new_results.length == undefined) {
-						$("#results").removeClass("visible");
-						$("#results").addClass("invisible");
+						hideResults();
 					} else {
 						results_table = buildResultsTable(response);
 						$('#search_results').html(results_table);
@@ -193,7 +233,9 @@ function buildResultsTable (results) {
 						});
 						$("#results").removeClass("invisible");
 						$("#results").addClass("visible");
+						$('#searchinstruct').append('<a id="email" href="" class="btn  btn-small pull-right"><i class="icon-envelope"></i> Email Top Results</a>');
 						$("#email").attr("href", createMailToLink(search_query, new_results));
+
 						// $('#search_results_input').val(search_query);
 
 					}
@@ -211,6 +253,8 @@ $(document).ready(function() {
 				placeholder: 'Loading Beers... (we\'re loading up thousands of beers, give us a sec)',
 				width: '100%'
 			});
+
+			createSearchExampleButtons();
 
 
 			// get beer list from server and populate search bar field
@@ -231,43 +275,20 @@ $(document).ready(function() {
 
 				});
 
-				var sponsored_beers = [
-				'Samuel Adams Boston Lager - Boston Beer Company (Samuel Adams)',
-				'Sierra Nevada Pale Ale - Sierra Nevada Brewing Co.',
-				'Rampant Imperial IPA - New Belgium Brewing',
-				'Obsidian Stout - Deschutes Brewery',
-				'A Little Sumpin\' Sumpin\' Ale - Lagunitas Brewing Company'
-				];
-				function shuffle (o) {
-				for(var j, x, i = o.length; i; j = parseInt(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
-					return o;
-			}
-			sponsored_beers = shuffle(sponsored_beers);
-
-
-				var examples_html = '<br>For example: ';
-				for (var ex = 0; ex < 2; ex++) {
-					// var ex_name = beer_list[Math.floor(Math.random() * beer_list.length)];
-					var ex_name = sponsored_beers[ex];
-
-					examples_html += '<button class="btn btn-small search-example">' + ex_name + '</button>   ';
-					
-				}
-				$("#search-examples").html(examples_html);
 				
-				$(".search-example").click(function () {
-					$(this).addClass("disabled");
-					$("#search").select2("val", $(this).text());
-							performSearch();
-							
-				});
 
 			});
 
 
 			// automatically send search bar selections to the server and display results
 			$("#search").change(function () {
+				if ($("#search").select2("val").length == undefined || $("#search").select2("val") == '') {
+					console.log("hiding results");
+					hideResults();
+				} else {
+					console.log($("#search").val());
 				performSearch();
+			}
 			});
 
 			// $("#emailform").submit(function() {
@@ -304,13 +325,15 @@ $(document).ready(function() {
 	<div class="page-header row-fluid">
 		<span class="span8 offset2">
 			<h2>Beer Recommendations</h2>
-			...because life is too short for bad beer.
-		</span>
+<!-- 			...because life is too short for bad beer.
+ -->		
+</span>
 	</div>
 
 	<div class="row-fluid">
 		<span class="span8 offset2">
 			<div id="searchinstruct" class="lead"> Enter your favorite beer(s) and we'll suggest others you'll love: </div>
+
 
 			<select multiple id="search">
 			</select>
