@@ -182,7 +182,7 @@ function addExplanationsToBeers (similar_beers, beers_avg) {
 		explanation = explanation.substring(0, explanation.length - 2);
 		var last_comma = explanation.lastIndexOf(',');
 		if (explanation.indexOf(',') == last_comma) {
-			explanation = explanation.substring(0, last_comma) + " and" + explanation.substring(last_comma + 1);
+			explanation = explanation.substring(0, last_comma - 1) + " and" + explanation.substring(last_comma + 1);
 		} else {
 			explanation = explanation.substring(0, last_comma + 1) + " and" + explanation.substring(last_comma + 1);
 		}
