@@ -148,8 +148,8 @@ function buildResultsTable (results) {
 				
 				$(".search-example").click(function () {
 					$(this).addClass("disabled");
-					$("#search").select2("val", [$(this).text()], true);
-
+					$("#search").select2("val", [$(this).text()]);
+					performSearch();
 							
 				});
 				}
