@@ -62,7 +62,7 @@ function buildResultsTable (results) {
 	var table = '<table id="search_results" class="table table-hover">' +
 	'<thead>' + 
 	'<tr>' + 
-	'<th>Recommended <span style="white-space: nowrap">Beer <i id="sugg-tip" class="icon-info-sign"></i></span></th>' +
+	'<th>Recommended Beer </th>' +
 	'<th>Brewery</th>' +
 	'<th>Style</th>' +
 	'<th>Odds You\'ll Love It</th>' +
@@ -190,12 +190,7 @@ function buildResultsTable (results) {
 						// 	});
 						// });
 						var table = $("#search_results")[0];
-						$('#sugg-tip').popover({
-							"html": true,
-							"content": '<div style="font-weight: normal;">Every one of our suggestions is recommended specifically because of the flavor profile of the beers you search for. Hover over the suggestions for explanations of why each was chosen for you!</div>',
-							"trigger": "hover",
-							"placement": "right"
-						});
+						
 
 						$('.explanation-btn').popover({
 							"html": true,
@@ -256,6 +251,13 @@ $(document).ready(function() {
 			});
 
 			createSearchExampleButtons();
+
+			$('#sugg-tip').popover({
+							"html": true,
+							"content": '<div style="font-weight: normal;">Tell us what you like and we\'ll use the <b>Alcohol Genome Project</b>\'s beer flavor profiles to find others you\'ll love. <br><br>Once you\'ve searched for some beers you can click on  <a href="" class="btn-link">Why?</a>  for each suggestion to see why it was chosen specifically for you!</div>',
+							"trigger": "hover",
+							"placement": "right"
+						});
 
 
 			// get beer list from server and populate search bar field
@@ -333,12 +335,13 @@ $(document).ready(function() {
 
 	<div class="row-fluid">
 		<span class="span8 offset2">
-			<div id="searchinstruct" class="lead"> What do you like? We'll recommend other drinks you'll love. 
+			<div id="searchinstruct"> <span class="lead">What do you like? We'll recommend other drinks you'll love. </span> <i id="sugg-tip" class="icon-question-sign"></i>
 
 			<span id="email-container" class="pull-right">
 			</span>
 			</div>
 
+			<br>
 
 			<select multiple id="search">
 			</select>
