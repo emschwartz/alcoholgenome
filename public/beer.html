@@ -233,7 +233,8 @@ function buildResultsTable (results) {
 						});
 						$("#results").removeClass("invisible");
 						$("#results").addClass("visible");
-						$('#searchinstruct').append('<a id="email" href="" class="btn  btn-small pull-right"><i class="icon-envelope"></i> Email Top Results</a>');
+
+						$('#email-container').html('<a id="email" href="" class="btn  btn-small pull-right"><i class="icon-envelope"></i> Email Top Results</a>');
 						$("#email").attr("href", createMailToLink(search_query, new_results));
 
 						// $('#search_results_input').val(search_query);
@@ -269,7 +270,7 @@ $(document).ready(function() {
 						.text(value)); 
 				});
 				$('#search').select2({
-					placeholder: 'Type some of your favorite beers...',
+					placeholder: 'Search for one or more of your favorite beers...',
 					width: "100%",
 					minimumInputLength: 3
 
@@ -332,7 +333,11 @@ $(document).ready(function() {
 
 	<div class="row-fluid">
 		<span class="span8 offset2">
-			<div id="searchinstruct" class="lead"> Enter your favorite beer(s) and we'll suggest others you'll love: </div>
+			<div id="searchinstruct" class="lead"> Enter your favorite beers and we'll suggest others you'll love: 
+
+			<span id="email-container" class="pull-right">
+			</span>
+			</div>
 
 
 			<select multiple id="search">
