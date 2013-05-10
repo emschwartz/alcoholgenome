@@ -270,7 +270,7 @@ $(document).ready(function() {
 						.text(value)); 
 				});
 				$('#search').select2({
-					placeholder: 'What do you like? (type in one or more beer names)',
+					placeholder: 'Type in one or more beer names',
 					width: "100%",
 					minimumInputLength: 3
 
@@ -284,10 +284,10 @@ $(document).ready(function() {
 			// automatically send search bar selections to the server and display results
 			$("#search").change(function () {
 				if ($("#search").select2("val").length == undefined || $("#search").select2("val") == '') {
-					console.log("hiding results");
+					// console.log("hiding results");
 					hideResults();
 				} else {
-					console.log($("#search").val());
+					// console.log($("#search").val());
 				performSearch();
 			}
 			});
@@ -333,7 +333,7 @@ $(document).ready(function() {
 
 	<div class="row-fluid">
 		<span class="span8 offset2">
-			<div id="searchinstruct" class="lead"> Tell us your favorite beers and we'll recommend others you'll love: 
+			<div id="searchinstruct" class="lead"> What do you like? We'll recommend other drinks you'll love. 
 
 			<span id="email-container" class="pull-right">
 			</span>
