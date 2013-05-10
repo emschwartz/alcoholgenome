@@ -74,10 +74,10 @@ function buildResultsTable (results) {
 	for (var r = 0; r < results.length; r++) {
 		table += '<tr>' + 
 		
-		'<td><div class="explanation-btn">' + results[r].name + '</div></td>' + 
+		'<td><div class="explanation-hover">' + results[r].name + '</div></td>' + 
 		'<td><div>' + results[r].brewery + '</div></td>' +
 		'<td><div>' + results[r].style + '</div></td>' +
-		'<td><div class="explanation-btn">' + results[r].score + "/10" + '<button class="btn btn-link btn-mini">Why?</button>'+ '</div></td>' +
+		'<td><div>' + results[r].score + "/10" + '<button class="explanation-btn btn btn-link btn-mini">Why?</button>'+ '</div></td>' +
 		'<td style="display:none"> ' + results[r].explanation + '</td>' +
 		// '<td> <button id="explanation-btn' + r + '" class="btn btn-mini btn-info btn-mini explanation-btn"><i class="icon-info-sign icon-white"></i></button> </td>' + 
 		'<td> <button id="like' + r + '" class="btn btn-mini btn-info like-rec-btn"><i class="icon-thumbs-up icon-white"></i></button> </td>' + 
@@ -94,10 +94,11 @@ function buildResultsTable (results) {
 				function createMailToLink (search_query, results) {
 					var mailto = "mailto: ?subject=Dionysus%20Beer%20Recommendations&body=";
 					var body = "When%20you%20searched%20the%20Alcohol%20Genome%20Project%20for:%0d%0d";
-					for (var s = 0; s < search_query.length; s++) {
-						body += search_query[s] + ", ";
-					}
-					body = body.substring(0, body.length-2);
+					// for (var s = 0; s < search_query.length; s++) {
+					// 	body += search_query[s] + ", ";
+					// }
+					body += search_query.replace(',', ', ');
+					// body = body.substring(0, body.length-2);
 					body += "%0d%0d%0dThe Top Recommendations Were:%0d%0d";
 
 					for (var r = 0; r < results.length; r++) {
@@ -147,8 +148,8 @@ function buildResultsTable (results) {
 				
 				$(".search-example").click(function () {
 					$(this).addClass("disabled");
-					$("#search").select2("val", $(this).text());
-							performSearch();
+					$("#search").select2("val", [$(this).text()], true);
+
 							
 				});
 				}
@@ -192,7 +193,7 @@ function buildResultsTable (results) {
 						var table = $("#search_results")[0];
 						
 
-						$('.explanation-btn').popover({
+						$('.explanation-hover').popover({
 							"html": true,
 							"content": (function() {
 								var row_num = parseInt($(this).parent().parent().parent().children().index($(this).parent().parent())) + 1;
@@ -203,8 +204,19 @@ function buildResultsTable (results) {
 							"placement": "top"
 						});
 
+						$('.explanation-btn').popover({
+							"html": true,
+							"content": (function() {
+								var row_num = parseInt($(this).parent().parent().parent().children().index($(this).parent().parent())) + 1;
+								var explanation = $(table.rows[row_num].cells[4]).html();
+								return explanation;
+							}),
+							"trigger": "click",
+							"placement": "top"
+						});
+
 						$('.like-rec-btn').popover({
-							"content": "Like this beer? Let us know so we can continue to improve our recommendations!",
+							"content": "Like this beer? Click here to let us know and we'll continue to improve our recommendations!",
 							"trigger": "hover"
 						});
 						$('.like-rec-btn').click(function () {
@@ -245,10 +257,10 @@ $(document).ready(function() {
 
 			// create empty search bar
 			// $("#search").prop("disabled", true);
-			$('#search').select2({
-				placeholder: 'Give us a sec, we\'re loading up thousands of beers so we can find ones you\'ll love...',
-				width: '100%'
-			});
+			// $('#search').select2({
+			// 	placeholder: 'Give us a sec, we\'re loading up thousands of beers so we can find ones you\'ll love...',
+			// 	width: '100%'
+			// });
 
 			createSearchExampleButtons();
 
@@ -263,20 +275,16 @@ $(document).ready(function() {
 			// get beer list from server and populate search bar field
 			$.get('/get_beer_list', function(response) {
 				var beer_list = response;
-				$.each(beer_list, function(index, value) { 
-					value = value.replace('&amp;', '&');
-
-					$('#search')
-					.append($("<option></option>")
-						.attr("value",value)
-						.text(value)); 
-				});
 				$('#search').select2({
 					placeholder: 'Type in one or more beer names',
 					width: "100%",
-					minimumInputLength: 3
+					multiple: true,
+					minimumInputLength: 3,
+					data: beer_list
+
 
 				});
+
 
 				
 
@@ -289,7 +297,7 @@ $(document).ready(function() {
 					// console.log("hiding results");
 					hideResults();
 				} else {
-					// console.log($("#search").val());
+					console.log($("#search").val());
 				performSearch();
 			}
 			});
@@ -343,8 +351,8 @@ $(document).ready(function() {
 
 			<br>
 
-			<select multiple id="search">
-			</select>
+			<input type="hidden" id="search">
+			</input>
 
 			<div id="search-examples"></div>
 
