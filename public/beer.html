@@ -251,7 +251,7 @@ $(document).ready(function() {
 			// create empty search bar
 			// $("#search").prop("disabled", true);
 			$('#search').select2({
-				placeholder: 'Loading Beers... (we\'re loading up thousands of beers, give us a sec)',
+				placeholder: 'Give us a sec, we\'re loading up thousands of beers so we can find ones you\'ll love...',
 				width: '100%'
 			});
 
@@ -270,7 +270,7 @@ $(document).ready(function() {
 						.text(value)); 
 				});
 				$('#search').select2({
-					placeholder: 'Search for one or more of your favorite beers...',
+					placeholder: 'What do you like? (type in one or more beer names)',
 					width: "100%",
 					minimumInputLength: 3
 
@@ -333,7 +333,7 @@ $(document).ready(function() {
 
 	<div class="row-fluid">
 		<span class="span8 offset2">
-			<div id="searchinstruct" class="lead"> Enter your favorite beers and we'll suggest others you'll love: 
+			<div id="searchinstruct" class="lead"> Tell us your favorite beers and we'll recommend others you'll love: 
 
 			<span id="email-container" class="pull-right">
 			</span>
