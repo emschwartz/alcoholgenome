@@ -6,14 +6,14 @@ function search (search_beer_names, db_client, express_response) {
 	
 	var first_query = queryForSelectedBeers(search_beer_names);
 	db_client.query(first_query.string, first_query.values, function(err, result){
-		if (result == undefined) {
+		if (result == undefined || result.rowCount == 0) {
 			express_response.send({});
 		} else {
 			var searched_beers = result.rows,
 			beers_avg = averageBeerQualities(searched_beers),
 			second_query_string = queryForSimilarBeerSearch(beers_avg);
 			db_client.query(second_query_string, function(err, result) {
-				if (result == undefined) {
+				if (result == undefined || result.rowCount == 0) {
 					express_response.send({});
 				} else {
 					var similar_beers = scoreAndSortBeers(result.rows, beers_avg);

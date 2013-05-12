@@ -3,7 +3,7 @@ pg = require('pg'),
 connectionString = process.env.DATABASE_URL || 'postgres://eschwartz@localhost:5432/',
 beerSearcher = require('./beerSearch.js');
 
-pg.defaults.poolSize = 10000;
+pg.defaults.poolSize = 100000;
 
 var app = express();
 app.use(express.bodyParser());
