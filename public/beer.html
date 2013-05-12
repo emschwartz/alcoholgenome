@@ -193,13 +193,9 @@ function buildResultsTable1 (results) {
 						$('#search_results').html(results_table);
 						$(".collapse").collapse('hide');
 						$("#collapse1").collapse('show');
-						$('collapse').on('mouseenter.collapse.data-api', '[data-toggle=collapse]', function(e) {
-        var $this = $(this),
-            href, target = $this.attr('data-target') || e.preventDefault() || (href = $this.attr('href')) && href.replace(/.*(?=#[^\s]+$)/, '') //strip for ie7
-            ,
-            option = $(target).data('collapse') ? 'show' : $this.data()
-            $(target).collapse(option)
-    })
+						$('.accordion').on('show hide', function (n) {
+    $(n.target).siblings('.accordion-heading').find('.accordion-toggle i').toggleClass('icon-chevron-right icon-chevron-down');
+});
 						// $(".ellipsis").dotdotdot({
 						// 	ellipsis	: '... ',
 						// 	watch: true
@@ -282,7 +278,7 @@ function buildResultsTable (results) {
 		var beer = results[b];
 		html += '<div class="accordion-group"><div class="accordion-heading"><a class="accordion-toggle" data-toggle="collapse" data-parent="#results_accordion" href="#collapse' + (b+1) + '">'
 		html += '<table><tr>';
-      	html += '<td class="beer-name ellipsis"><b>' + beer.name + '</b></td>';
+      	html += '<td class="beer-name ellipsis"><button class="btn btn-link btn-mini"><i class="icon-chevron-right"></i></button> <b> ' + beer.name + '</b></td>';
       	html += '<td class="brewery-name ellipsis">' + beer.brewery + '</td>';
       	html += '<td class="rating">' + beer.score + '/10' + '</td>';
       	html += '</tr></table>';
