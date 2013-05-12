@@ -193,6 +193,13 @@ function buildResultsTable1 (results) {
 						$('#search_results').html(results_table);
 						$(".collapse").collapse('hide');
 						$("#collapse1").collapse('show');
+						$('collapse').on('mouseenter.collapse.data-api', '[data-toggle=collapse]', function(e) {
+        var $this = $(this),
+            href, target = $this.attr('data-target') || e.preventDefault() || (href = $this.attr('href')) && href.replace(/.*(?=#[^\s]+$)/, '') //strip for ie7
+            ,
+            option = $(target).data('collapse') ? 'show' : $this.data()
+            $(target).collapse(option)
+    })
 						// $(".ellipsis").dotdotdot({
 						// 	ellipsis	: '... ',
 						// 	watch: true
@@ -375,7 +382,7 @@ $(document).ready(function() {
 	</div>
 
 	<div class="page-header row-fluid">
-		<span class="span6 offset3">
+		<span class="span8 offset2">
 			<h2>Beer Recommendations</h2>
 <!-- 			...because life is too short for bad beer.
  -->		
@@ -383,7 +390,7 @@ $(document).ready(function() {
 	</div>
 
 	<div class="row-fluid">
-		<span class="span6 offset3">
+		<span class="span8 offset2">
 			<div id="searchinstruct"> <span class="lead">What do you like? We'll recommend other drinks you'll love. </span> 
 
 			<span id="email-container" class="pull-right">
@@ -420,7 +427,7 @@ $(document).ready(function() {
 	</div> -->
 
 	<div class="row-fluid">
-		<span class="span6 offset3">
+		<span class="span8 offset2">
 
 			<div id="search_results">
 			</div>
