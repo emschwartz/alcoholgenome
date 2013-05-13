@@ -23,6 +23,8 @@ body {
 	/*font-size: 100%;*/
 	font-weight: 200;
 	line-height: 110%;
+		margin-left: auto;
+	margin-right: auto;
 }
 .big-lead {
 	display: block;
@@ -72,6 +74,8 @@ body {
 	/*white-space: nowrap;*/
 	font-weight: 200;
 	font-size: 130%;
+		margin-left: auto;
+	margin-right: auto;
 	
 }
 
@@ -81,8 +85,6 @@ body {
 	padding-bottom: 5%;
 	white-space: nowrap;
 	text-align: center;
-	margin-left: auto;
-	margin-right: auto;
 	font-size: 150%;
 }
 
@@ -128,6 +130,8 @@ body {
 .tag-line {
 	font-weight: 200;
 	font-size: 100%;
+		margin-left: auto;
+	margin-right: auto;
 }
 
 .big-lead {
@@ -180,6 +184,8 @@ body {
 	font-weight: 200;
 	font-size: 130%;
 	line-height: 140%;
+		margin-left: auto;
+	margin-right: auto;
 }
 
 .big-lead {
