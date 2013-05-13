@@ -21,14 +21,13 @@ body {
 
 .tag-line {
 	/*font-size: 100%;*/
-white-space: normal;
 	font-weight: 200;
 	line-height: 110%;
 }
 .big-lead {
 	display: block;
 	/*font-size: 120%;*/
-	white-space: normal;
+	white-space: nowrap;
 }
 
 #searchinstruct {
@@ -80,7 +79,7 @@ body {
 	/*width: 50%;*/
 	display: block;
 	padding-bottom: 5%;
-	/*white-space: nowrap;*/
+	white-space: nowrap;
 	text-align: center;
 	margin-left: auto;
 	margin-right: auto;
@@ -127,7 +126,6 @@ body {
 
 
 .tag-line {
-	white-space: nowrap;
 	font-weight: 200;
 	font-size: 100%;
 }
@@ -136,7 +134,7 @@ body {
 	font-size: 165%;
 	display: block;
 	padding-bottom: 5%;
-	/*white-space: nowrap;*/
+	white-space: nowrap;
 }
 
 #searchinstruct {
@@ -178,7 +176,7 @@ body {
 
 
 .tag-line {
-	white-space: nowrap;
+	/*white-space: nowrap;*/
 	font-weight: 200;
 	font-size: 130%;
 	line-height: 140%;
@@ -188,7 +186,7 @@ body {
 	font-size: 165%;
 	display: block;
 	padding-bottom: 5%;
-	/*white-space: nowrap;*/
+	white-space: nowrap;
 }
 
 #searchinstruct {
