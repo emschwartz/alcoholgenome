@@ -167,15 +167,15 @@ function buildResultsAccordion(results) {
 
 function buildResultsAccordionContent (results, start) {
 	var html = '';
-	for (var b = start; b < results.length + start; b++) {
+	for (var b = 0; b < results.length; b++) {
 		var beer = results[b];
-		html += '<div class="accordion-group"><div class="accordion-heading"><a class="accordion-toggle" data-toggle="collapse" data-parent="#results_accordion" href="#collapse' + (b + 1) + '">'
+		html += '<div class="accordion-group"><div class="accordion-heading"><a class="accordion-toggle" data-toggle="collapse" data-parent="#results_accordion" href="#collapse' + (b + 1 + start) + '">'
 		html += '<table><tr>';
 		html += '<td class="beer-name ellipsis"> <b> ' + beer.name + '</b></td>';
 		html += '<td class="brewery-name ellipsis">' + beer.brewery + '</td>';
 		html += '<td class="rating">' + beer.score + '/10' + '</td>';
 		html += '</tr></table>';
-		html += '</a></div><div id="collapse' + (b + 1) + '" class="accordion-body collapse"><div class="accordion-inner">';
+		html += '</a></div><div id="collapse' + (b + 1 + start) + '" class="accordion-body collapse"><div class="accordion-inner">';
 		html += '<table><tr>';
 		html += '<td class="style">' + beer.style + '</td>';
 		html += '<td class="explanation">' + beer.explanation + '</td>';
