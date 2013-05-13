@@ -24,7 +24,6 @@ $(document).ready(function() {
 					});
 
 		div_height = $('#main').height();
-	console.log(div_height);
 	});
 
 	$("#search").change(function() {
@@ -162,7 +161,6 @@ function buildResultsAccordion(results) {
 	html += '</div>';
 	html += '<button id="show_more" class="btn"><b>Show 10 More</b></button>';
 	html += '</div>';
-	console.log(html);
 
 	return html;
 }
