@@ -1,10 +1,9 @@
 body {
-	background: url("beer_background5.png") no-repeat center center fixed; 
+	background: url("beer_background6.jpg") no-repeat center center fixed; 
 	-webkit-background-size: cover;
 	-moz-background-size: cover;
 	-o-background-size: cover;
 	background-size: cover;
-
 }
 
 
@@ -16,17 +15,16 @@ body {
 	-o-background-size: cover;
 	background-size: cover;
 
-	/*background-color: white;*/
-
 	border-style:solid;
 	border-width:5px;
 	border-color: black;
 	padding: 3%;
+
+	margin-top: 10%;
+	margin-bottom: 10%;
 }
 
 #logo {
-	/*padding-top: 50px;*/
-	/*padding-left: 20px;*/
 	height: auto;
 	width: 25%;
 	min-width: 100px;
@@ -48,10 +46,6 @@ body {
 	margin-left: 10%;
 }
 
-#main {
-	margin-top: 10%;
-	margin-bottom: 10%;
-}
 
 
 .vcentered {
