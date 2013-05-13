@@ -165,9 +165,9 @@ function buildResultsAccordion(results) {
 	return html;
 }
 
-function buildResultsAccordionContent (results) {
+function buildResultsAccordionContent (results, start) {
 	var html = '';
-	for (var b = 0; b < results.length; b++) {
+	for (var b = start; b < results.length + start; b++) {
 		var beer = results[b];
 		html += '<div class="accordion-group"><div class="accordion-heading"><a class="accordion-toggle" data-toggle="collapse" data-parent="#results_accordion" href="#collapse' + (b + 1) + '">'
 		html += '<table><tr>';
@@ -199,7 +199,7 @@ function getMoreResults () {
 			$("#show_more").remove();
 		} else {
 			results_start += new_results.length;
-			var new_accordion_content = buildResultsAccordionContent(new_results);
+			var new_accordion_content = buildResultsAccordionContent(new_results, results_start);
 			$("#results_accordion").append(new_accordion_content);
 		}
 	});
