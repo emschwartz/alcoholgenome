@@ -22,7 +22,7 @@ body {
 }
 .big-lead {
 	font-size: 120%;
-	white-space: nowrap;
+	/*white-space: nowrap;*/
 }
 
 #searchinstruct {
@@ -127,6 +127,7 @@ body {
 .big-lead {
 	font-size: 165%;
 	display: block;
+	padding-bottom: 5%;
 	white-space: nowrap;
 }
 
