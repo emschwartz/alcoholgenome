@@ -2,7 +2,7 @@ var scaled_categories = [],
 	binary_categories = [];
 
 
-function search (search_beer_names, db_client, express_response) {
+function search (search_beer_names, results_start, num_results, db_client, express_response) {
 	
 	var first_query = queryForSelectedBeers(search_beer_names);
 	db_client.query(first_query.string, first_query.values, function(err, result){
@@ -17,10 +17,10 @@ function search (search_beer_names, db_client, express_response) {
 					express_response.send({});
 				} else {
 					var similar_beers = scoreAndSortBeers(result.rows, beers_avg);
-					similar_beers = similar_beers.slice(0, 30);
-					similar_beers = addExplanationsToBeers(similar_beers, beers_avg);
+					var selected_beers = similar_beers.slice(results_start, (results_start + num_results));
+					selected_beers = addExplanationsToBeers(selected_beers, beers_avg);
 
-					express_response.send(similar_beers);
+					express_response.send(selected_beers);
 				}	
 			});
 		}
@@ -171,7 +171,7 @@ function addExplanationsToBeers (similar_beers, beers_avg) {
 		if (similar_beers[b].score < 9) {
 			love_or_like = "like";
 		}
-		var explanation = "<div>We think you'll " + love_or_like + " this beer because it is ";
+		var explanation = "<div>Based on your search, we think you'll " + love_or_like + " this beer because it is ";
 		for (var c = 0; c < binary_categories.length; c++) {
 			var cat = binary_categories[c];
 			if (similar_beers[b][cat] == 1) {
