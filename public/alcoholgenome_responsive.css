@@ -20,14 +20,14 @@ body {
 
 .tag-line {
 	/*font-size: 100%;*/
-/*white-space: nowrap;*/
+white-space: normal;
 	font-weight: 200;
 	line-height: 110%;
 }
 .big-lead {
 	display: inline-block;
 	/*font-size: 120%;*/
-	/*white-space: nowrap;*/
+	white-space: normal;
 }
 
 #searchinstruct {
