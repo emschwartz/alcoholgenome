@@ -157,7 +157,7 @@ function displayResults (search_query, new_results) {
 
 function buildResultsAccordion(results) {
 	var html = '<div class="container-fluid results"><div class="accordion"  id="results_accordion">';
-	html += buildResultsAccordionContent(results);
+	html += buildResultsAccordionContent(results, 0);
 	html += '</div>';
 	html += '<button id="show_more" class="btn"><b>Show 10 More</b></button>';
 	html += '</div>';
