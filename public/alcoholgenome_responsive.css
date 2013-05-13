@@ -21,6 +21,7 @@ body {
 	/*font-size: 100%;*/
 }
 .big-lead {
+	display: inline-block;
 	/*font-size: 120%;*/
 	/*white-space: nowrap;*/
 }
@@ -71,7 +72,7 @@ body {
 
 .big-lead {
 	/*width: 50%;*/
-	display: block;
+	display: inline-block;
 	padding-bottom: 5%;
 	/*white-space: nowrap;*/
 	text-align: center;
@@ -86,7 +87,7 @@ body {
 	vertical-align: middle;
 	text-align: center;
 	width: 55%;
-	margin-left: 3%;
+	/*margin-left: 3%;*/
 }
 
 }
