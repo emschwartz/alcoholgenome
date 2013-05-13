@@ -16,6 +16,7 @@ body {
 	height: auto;
 	width: 28%;
 	min-width: 50px;
+	display: block;
 }
 
 .tag-line {
@@ -25,7 +26,7 @@ white-space: normal;
 	line-height: 110%;
 }
 .big-lead {
-	display: inline-block;
+	display: block;
 	/*font-size: 120%;*/
 	white-space: normal;
 }
@@ -50,7 +51,7 @@ body {
 
 
 .box {
-	display: inline-block;
+	display: block;
 	
 	border-width:5px;
 	padding: 3%;
@@ -64,12 +65,12 @@ body {
 	width: 28%;
 	min-width: 100px;
 	padding: 1%;
-	display: inline-block;
+	display: block;
 }
 
 
 .tag-line {
-	white-space: nowrap;
+	/*white-space: nowrap;*/
 	font-weight: 200;
 	font-size: 130%;
 	
@@ -77,9 +78,9 @@ body {
 
 .big-lead {
 	/*width: 50%;*/
-	display: inline-block;
+	display: block;
 	padding-bottom: 5%;
-	white-space: nowrap;
+	/*white-space: nowrap;*/
 	text-align: center;
 	margin-left: auto;
 	margin-right: auto;
