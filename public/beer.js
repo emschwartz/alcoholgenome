@@ -116,7 +116,7 @@ function displayResults (search_query, new_results) {
 	$('#search_results').html(results_accordion);
 	// $(".collapse").collapse('hide');
 	// $("#collapse1").collapse('show');
-	$('#collapse1').addClass('in');
+	// $('#collapse1').addClass('in');
 	$("#show_more").click(function () {
 		getMoreResults();
 	});

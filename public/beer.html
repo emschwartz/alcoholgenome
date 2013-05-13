@@ -4,15 +4,16 @@
 <head>
 
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 	<link href="//cdn.jsdelivr.net/bootstrap/2.3.1/css/bootstrap.min.css" rel="stylesheet" type="text/css">
 	<link href="//cdn.jsdelivr.net/bootstrap/2.3.1/css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css">
 
-	<meta content="Alcohol recommendation app by the Alcohol Genome Project" name="description">
+	<meta content="Love what you drink! The Alcohol Genome Project is a recommendation engine for beer, wine, and whisky. Tell us some beers you like and we'll recommend others we know you'll enjoy. Life is too short for bad beer." name="description">
 	<meta content="alcohol,beer,wine,whiskey,pandora,recommendation,suggestion,review,beeradvocate" name="keywords">
 	<meta content="Evan Schwartz" name="author">
 	<meta charset="utf-8">
 
-	<title>Beer Recommendations by the Alcohol Genome Project</title>
+	<title>The Alcohol Genome Project - Beer Recommendations</title>
 
 	<!-- jQuery -->
 
@@ -22,8 +23,9 @@
 
 	<!-- boostrap -->
 	<link href="//cdn.jsdelivr.net/bootstrap/2.3.1/css/bootstrap.min.css" rel="stylesheet" type="text/css">
-	<link href="//cdn.jsdelivr.net/bootstrap/2.3.1/css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css">
 	<script src="//cdn.jsdelivr.net/bootstrap/2.3.1/js/bootstrap.min.js" type="text/javascript"></script>
+	<link href="//cdn.jsdelivr.net/bootstrap/2.3.1/css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css">
+
 	<script src="//cdn.jsdelivr.net/bootstrap/2.3.1/js/bootstrap-transition.js" type="text/javascript"></script>
 
 	<!-- Select2 -->
@@ -34,7 +36,8 @@
 	<script src="./beer.js" type="text/javascript"></script>
 	
 
-	<link href="alcoholgenome.css" rel="stylesheet">
+	<link href="alcoholgenome_unchanging.css" rel="stylesheet">
+	<link href="alcoholgenome_responsive.css" rel="stylesheet">
 	<link href='./bottle_logo.ico' rel='shortcut icon'>
 </head>
 
@@ -45,24 +48,26 @@
 
 				<span id="main" class="box">
 
-					<div id="header">
+					<div id="header" class="span12">
 						<a href="http://alcoholgenome.com">
 							<img id="logo" src="alcohol_genome_logo.png" alt="The Alcohol Genome Project">
 						</a>
 
-							<span id="searchinstruct" class="text-center">
+							<span id="searchinstruct">
 
-								<span class="lead">
+								<span class="tag-line">
 									<span class="big-lead"> 
-										<a href="#">Love what you drink.</a>
+										Love what you drink.
 									</span>
-									Tell us some beers you like and we'll recommend others we know you'll enjoy.
+									<span class="small-lead hidden-phone">
+									Tell us some beers you like. <br> We'll recommend others you'll enjoy.
 									<br>
-									Life is too short for bad beer.
+									Life is too short for bad beer!
+								</span>
 								</span>
 								
 							</span> 
-							<!-- <span class="pull-right" id="email-container"></span> -->
+
 					</div>
 					<br>
 

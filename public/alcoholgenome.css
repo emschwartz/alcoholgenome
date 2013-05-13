@@ -26,7 +26,7 @@ body {
 
 #logo {
 	height: auto;
-	width: 25%;
+	width: 28%;
 	min-width: 100px;
 	padding: 1%;
 	display: inline-block;
@@ -41,23 +41,13 @@ body {
 #searchinstruct {
 	padding: 3%;
 	display: inline-block;
-	vertical-align: middle;
+	vertical-align: bottom;
 	width: 55%;
-	margin-left: 10%;
+	margin-left: 5%;
 }
-
-
-
-.vcentered {
-	margin-bottom: auto;
-	vertical-align: middle;
-}
-
 
 
 .beer-name {
-	/*color: #702F07;*/
-
 	margin: auto;
 	text-align: left;
 	width:45%;
@@ -137,7 +127,6 @@ a:hover {
 }
 
 .select2-container-multi .select2-choices {
-	height: 20px;
 	font-size: 14px;
 	line-height: 20px;
 	border: 5px solid #AAA;
