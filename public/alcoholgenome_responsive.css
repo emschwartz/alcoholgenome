@@ -25,6 +25,8 @@ body {
 	line-height: 110%;
 		margin-left: auto;
 	margin-right: auto;
+		display: inline-block;
+
 }
 .big-lead {
 	display: block;
@@ -76,6 +78,8 @@ body {
 	font-size: 130%;
 		margin-left: auto;
 	margin-right: auto;
+	display: inline-block;
+
 	
 }
 
@@ -130,6 +134,8 @@ body {
 .tag-line {
 	font-weight: 200;
 	font-size: 100%;
+	display: inline-block;
+
 		margin-left: auto;
 	margin-right: auto;
 }
@@ -181,6 +187,8 @@ body {
 
 .tag-line {
 	/*white-space: nowrap;*/
+	display: inline-block;
+
 	font-weight: 200;
 	font-size: 130%;
 	line-height: 140%;
