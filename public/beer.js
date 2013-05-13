@@ -179,7 +179,7 @@ function buildResultsAccordionContent (results) {
 		html += '<table><tr>';
 		html += '<td class="style">' + beer.style + '</td>';
 		html += '<td class="explanation">' + beer.explanation + '</td>';
-		html += '<td class="ba-link"><a href="' + beer.link + '" target="_blank"><i class=" icon-share-alt"></i> Read More</a></td>';
+		html += '<td class="ba-link hidden-phone"><a href="' + beer.link + '" target="_blank"><i class=" icon-share-alt"></i> Read More</a></td>';
 		html += '</tr></table>';
 		html += '</div></div></div>';
 	}
