@@ -1,9 +1,15 @@
 var results_start,
-	results_per_page = 10,
-	div_height;
+results_per_page = 10,
+div_height;
 
 $(document).ready(function() {
 	createSearchExampleButtons();
+	$('#search').select2({
+		placeholder: 'Loading up thousands of beers...',
+		multiple: true,
+		width: "100%",
+		data: []
+	});
 
 	$.get('/get_beer_list', function(response) {
 		var beer_list = response;
@@ -21,9 +27,10 @@ $(document).ready(function() {
 			formatNoMatches: function (term) {
 				return "We're sorry, we couldn't find anything by that name. Please try another!"
 			}
-					});
+		});
 
 		div_height = $('#main').height();
+		body_height = $('')
 	});
 
 	$("#search").change(function() {
@@ -62,7 +69,7 @@ function createSearchExampleButtons() {
 
 	function shuffle(o) {
 		for (var j, x, i = o.length; i; j = parseInt(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
-		return o;
+			return o;
 	}
 	sponsored_beers = shuffle(sponsored_beers);
 	var examples_html = '<br>For example, try:<br><ul>';
@@ -90,11 +97,11 @@ function hideResults() {
 function performSearch() {
 	results_start = 0;
 	var search_query = $("#search").val(),
-		to_send = { 
-			"search_items": search_query,
-			"results_start": results_start,
-			"num_results": results_per_page
-		 };
+	to_send = { 
+		"search_items": search_query,
+		"results_start": results_start,
+		"num_results": results_per_page
+	};
 	if (search_query != '') {
 		$("#search-examples").html('');
 	}
@@ -116,7 +123,7 @@ function displayResults (search_query, new_results) {
 	$('#search_results').html(results_accordion);
 	// $(".collapse").collapse('hide');
 	// $("#collapse1").collapse('show');
-	// $('#collapse1').addClass('in');
+	$('#collapse1').addClass('in');
 	$("#show_more").click(function () {
 		getMoreResults();
 	});
@@ -149,8 +156,8 @@ function displayResults (search_query, new_results) {
 	// $(".purchase").click(function() {
 	// 	alert("We're sorry, this feature is under development.\n\nNevertheless, we've noted that you might be interested in being able to purchase recommended drinks from Dionysus or find where you can purchase them in your local area. We'll try to get this working as soon as we can!\n\n- The Alcohol Genome Project");
 	// });
-	$("#results").removeClass("invisible");
-	$("#results").addClass("visible");
+$("#results").removeClass("invisible");
+$("#results").addClass("visible");
 	// $('#email-container').html('<a id="email" href="" class="btn  btn-small pull-right"><i class="icon-envelope"></i></a>');
 	// $("#email").attr("href", createMailToLink(search_query, new_results));
 }
@@ -188,11 +195,11 @@ function buildResultsAccordionContent (results, start) {
 
 function getMoreResults () {
 	var search_query = $("#search").val(),
-		to_send = { 
-			"search_items": search_query,
-			"results_start": results_start,
-			"num_results": results_per_page
-		 };
+	to_send = { 
+		"search_items": search_query,
+		"results_start": results_start,
+		"num_results": results_per_page
+	};
 	$.post('/search', to_send, function(response) {
 		var new_results = response;
 		if (new_results.length == undefined || new_results.length == 0) {

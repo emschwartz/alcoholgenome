@@ -8,8 +8,8 @@ body {
 .box {
 	border-width:2px;
 	padding: 1%;
-	margin-top: 1%;
-	margin-bottom: 1%;
+/*	margin-top: 1%;
+	margin-bottom: 1%;*/
 }
 
 #logo {
@@ -17,6 +17,7 @@ body {
 	width: 28%;
 	min-width: 50px;
 	display: block;
+	
 }
 
 .tag-line {
@@ -59,8 +60,8 @@ body {
 	border-width:5px;
 	padding: 3%;
 
-	margin-top: 10%;
-	margin-bottom: 10%;
+/*	margin-top: 10%;
+	margin-bottom: 10%;*/
 }
 
 #logo {
@@ -119,7 +120,7 @@ body {
 	padding: 3%;
 
 	margin-top: 5%;
-	margin-bottom: 5%;
+	margin-bottom: 2%;
 }
 
 #logo {
@@ -173,7 +174,7 @@ body {
 	padding: 3%;
 
 	margin-top: 10%;
-	margin-bottom: 10%;
+	margin-bottom: 2%;
 }
 
 #logo {

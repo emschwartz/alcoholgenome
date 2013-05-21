@@ -215,9 +215,9 @@ function addExplanationsToBeers (similar_beers, beers_avg) {
 		} else {
 			explanation = explanation.substring(0, last_comma + 1) + " and" + explanation.substring(last_comma + 1);
 		}
-		if (similar_beers[b].score == 10) {
-			explanation += " (and because it's an <i>excellent</i> beer)";
-		}
+		// if (similar_beers[b].score == 10) {
+		// 	explanation += " (and because it's an <i>excellent</i> beer)";
+		// }
 		explanation += ".</div>";
 		similar_beers[b].explanation = explanation;
 		// console.log(similar_beers[b]);
