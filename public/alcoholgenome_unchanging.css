@@ -1,6 +1,6 @@
 body {
 		background: url("beer_background6.jpg") no-repeat center center fixed;
-		/*background-color: black; */
+		/*background-color: white;*/
 	-webkit-background-size: cover;
 	-moz-background-size: cover;
 	-o-background-size: cover;
@@ -109,6 +109,7 @@ a.about {
 
 a:hover {
 	color: #993333;
+
 	text-decoration: none;
 }
 
