@@ -1,5 +1,6 @@
 body {
-		background: url("beer_background6.jpg") no-repeat center center fixed; 
+		background: url("beer_background6.jpg") no-repeat center center fixed;
+		/*background-color: black; */
 	-webkit-background-size: cover;
 	-moz-background-size: cover;
 	-o-background-size: cover;
@@ -70,10 +71,14 @@ body {
 	background-color: white;
 }
 
+.accordion-heading-active {
+	color: #993333;
+}
+
 #show_more {
 	margin-right: auto;
 	margin-left: auto;
-	color: #a01d21;
+	color: #993333;
 }
 
 table {
@@ -81,31 +86,49 @@ table {
 	width: 100%;
 }
 
-a {
-	color: #000000;
-	text-decoration: none;
-}
+
 
 td {
 	vertical-align: top;
 }
 
+.results a {
+	text-decoration: none; 
+		color: black;
+
+}
+
+a.about {
+	text-decoration: none; 
+	color: #993333;
+}
+
+.about-text {
+	text-align: center;
+}
+
 a:hover {
-	color: #a01d21;
+	color: #993333;
 	text-decoration: none;
 }
 
+.bottom-link-selected {
+	color: #993333;
+	text-decoration: none;
+
+}
+
+.bottom-link-container {
+	margin-left: 2%;
+	margin-right: 2%;
+	margin-bottom: 2%;
+	float: right;
+}
 
 .bottom-link {
-	margin: 2%;
+	color: #f9f2ea;
+	text-decoration: none;
 }
-
-.bottom-link a {
-	color: white;
-
-}
-
-
 
 .select2-container {
 	margin-bottom:9px;
@@ -120,12 +143,12 @@ border-radius: 5px;
 }
 
 .select2-container-multi.select2-container-active .select2-choices {
-	border: 5px solid #a01d21;
+	border: 5px solid #993333;
 }
 
 .select2-container-multi.select2-dropdown-open .select2-choices {
 	-webkit-border-radius: 5px 5px 0 0;
 	-moz-border-radius: 5px 5px 0 0;
 	border-radius: 5px 5px 0 0;
-	border: 5px solid #a01d21;
+	border: 5px solid #993333;
 }

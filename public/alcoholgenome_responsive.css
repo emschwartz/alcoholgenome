@@ -37,7 +37,7 @@ body {
 
 #searchinstruct {
 	/*padding: 2%;*/
-	width: 60%;
+	width: 100%;
 	margin: 0;
 }
 
@@ -98,9 +98,9 @@ body {
 	display: inline-block;
 	vertical-align: middle;
 	text-align: center;
-	width: 55%;
-	margin-left: 3%;
-}
+	width: 100%;
+/*	margin-left: 3%;
+*/}
 
 }
 

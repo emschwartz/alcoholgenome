@@ -124,9 +124,20 @@ function displayResults (search_query, new_results) {
 	// $(".collapse").collapse('hide');
 	// $("#collapse1").collapse('show');
 	$('#collapse1').addClass('in');
-	$("#show_more").click(function () {
-		getMoreResults();
-	});
+
+	// $('.accordion-body').on('show', function(){
+	// 	console.log("called show fn");
+	// 	$(this).siblings('.accordion-heading').addClass('accordion-heading-active');
+	// });
+	// $('.accordion-body').on('hide', function() {
+	// 	console.log("called hide fn");
+	// 	$(this).siblings('.accordion-heading').removeClass('accordion-heading-active');
+	// });
+
+	// $('#collapse1').siblings('.accordion-heading').addClass('accordion-heading-active');
+	// $("#show_more").click(function () {
+	// 	getMoreResults();
+	// });
 
 	// $('.accordion-toggle').on('click',function(e){
  //    if($(this).parents('.accordion-group').children('.accordion-body').hasClass('in')){
