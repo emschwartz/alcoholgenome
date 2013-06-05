@@ -135,9 +135,9 @@ function displayResults (search_query, new_results) {
 	// });
 
 	// $('#collapse1').siblings('.accordion-heading').addClass('accordion-heading-active');
-	// $("#show_more").click(function () {
-	// 	getMoreResults();
-	// });
+	$("#show_more").click(function () {
+		getMoreResults();
+	});
 
 	// $('.accordion-toggle').on('click',function(e){
  //    if($(this).parents('.accordion-group').children('.accordion-body').hasClass('in')){
